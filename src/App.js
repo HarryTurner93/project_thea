@@ -1,55 +1,43 @@
 import React from 'react';
 import './App.css';
+import { Navbar, Nav } from 'react-bootstrap';
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
-// Import custom components.
-import { Map } from './components/map';
-import { TabBrowser } from './components/tabBrowser'
+// Import my pages.
+import Dashboard from "./components/dashboard";
+import Summary from "./components/summary";
+import Login from "./components/login";
 
 class App extends React.Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            tabs: []
-        };
-
-        this.removeTab = this.removeTab.bind(this)
-        this.addTab = this.addTab.bind(this)
-    }
-
-    // Call back function to remove a tab from the browser.
-    removeTab (id) {
-        this.setState((state) => {
-            const new_tabs = state.tabs.filter(tab => tab.id !== id);
-            return {tabs: new_tabs}
-        })
-    }
-
-    // Call back function to add a tab to the browser.
-    addTab (eventKey) {
-        this.setState((state, props) => ({
-            tabs: state.tabs.concat({"eventKey": eventKey, "title": eventKey, "id": state.tabs.length})
-        }));
-    }
-
     render() {
         return (
-            <main className="App">
-                <div style={{display: 'flex'}}>
-                    <div style={{flex: 1}}>
-                        <Map
-                            add_tab_cb={this.addTab}
-                        />
-                    </div>
-                    <div style={{flex: 1}}>
-                        <TabBrowser
-                            tabs={this.state.tabs}
-                            remove_tab_cb={this.removeTab}
-                        />
-                    </div>
-                </div>
-            </main>
-        )
+            <Router>
+                <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+                    <Navbar.Brand>Thea Portal</Navbar.Brand>
+                    <Navbar.Collapse>
+                        <Nav className="mr-auto">
+                            <Nav.Link href="/">Dashboard</Nav.Link>
+                            <Nav.Link href="/summary">Summary Report</Nav.Link>
+                        </Nav>
+                        <Nav>
+                            <Nav.Link href="/login">Login</Nav.Link>
+                        </Nav>
+                    </Navbar.Collapse>
+                </Navbar>
+                <Switch>
+                    <Route exact path="/">
+                        <Dashboard />
+                    </Route>
+                    <Route path="/summary">
+                        <Summary />
+                    </Route>
+                    <Route path="/login">
+                        <Login />
+                    </Route>
+                </Switch>
+            </Router>
+        );
     }
 }
 

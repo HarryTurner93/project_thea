@@ -36,7 +36,7 @@ class InfoCard extends React.Component {
 
         return (
             <div style={{padding: "20px", paddingTop: "0px"}}>
-                <div style={{padding: "20px", backgroundColor:"#B6E0DC", display: "flex", flexDirection: "column", alignItems: "flex-start"}}>
+                <div style={{padding: "20px", backgroundColor:"#E4F3D8", display: "flex", flexDirection: "column", alignItems: "flex-start"}}>
                     <div><h4>Basic Sensor Details</h4></div>
                     <div><b>Name:</b> {sensor.name}</div>
                     <div><b>Sensor Type:</b> {sensor.type}</div>
@@ -70,6 +70,46 @@ class TitleCard extends React.Component {
     }
 }
 
+class DataCard extends React.Component {
+
+    render() {
+        // Deconstruct props.
+        const { sensor_name } = this.props;
+
+        // Find the sensor with the right name.
+        const sensor = Sensor_data.filter(sensor => sensor.name === sensor_name)[0];
+
+        return (
+            <div style={{padding: "20px", paddingTop: "0px"}}>
+                <div style={{padding: "20px", backgroundColor:"#CAE6B2", display: "flex", flexDirection: "column", alignItems: "flex-start"}}>
+                    <div><h4>Data</h4></div>
+                    <div>Not implemented yet.</div>
+                </div>
+            </div>
+        );
+    }
+}
+
+class ControlCard extends React.Component {
+
+    render() {
+        // Deconstruct props.
+        const { sensor_name } = this.props;
+
+        // Find the sensor with the right name.
+        const sensor = Sensor_data.filter(sensor => sensor.name === sensor_name)[0];
+
+        return (
+            <div style={{padding: "20px", paddingTop: "0px"}}>
+                <div style={{padding: "20px", backgroundColor:"#AFD88D", display: "flex", flexDirection: "column", alignItems: "flex-start"}}>
+                    <div><h4>Control</h4></div>
+                    <div>Not implemented yet.</div>
+                </div>
+            </div>
+        );
+    }
+}
+
 class SensorBite extends React.Component {
   render() {
 
@@ -89,4 +129,4 @@ class SensorBite extends React.Component {
   }
 }
 
-export { SensorBite, SensorIcon, InfoCard, TitleCard };
+export { SensorBite, SensorIcon, InfoCard, TitleCard, DataCard, ControlCard };
