@@ -1,7 +1,8 @@
 import React from 'react';
 import './App.css';
-import { Navbar, Nav } from 'react-bootstrap';
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { Navbar, Nav, NavItem } from 'react-bootstrap';
+import { LinkContainer } from "react-router-bootstrap";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 // Import my pages.
 import Dashboard from "./components/dashboard";
@@ -17,11 +18,17 @@ class App extends React.Component {
                     <Navbar.Brand>Thea Portal</Navbar.Brand>
                     <Navbar.Collapse>
                         <Nav className="mr-auto">
-                            <Nav.Link href="/">Dashboard</Nav.Link>
-                            <Nav.Link href="/summary">Summary Report</Nav.Link>
+                            <NavItem href="/">
+                                <Nav.Link as={Link} to="/" >Dashboard</Nav.Link>
+                            </NavItem>
+                            <NavItem href="/summary">
+                                <Nav.Link as={Link} to="/summary" >Summary</Nav.Link>
+                            </NavItem>
                         </Nav>
                         <Nav>
-                            <Nav.Link href="/login">Login</Nav.Link>
+                            <NavItem href="/login">
+                                <Nav.Link as={Link} to="/login" >Login</Nav.Link>
+                            </NavItem>
                         </Nav>
                     </Navbar.Collapse>
                 </Navbar>
@@ -40,5 +47,15 @@ class App extends React.Component {
         );
     }
 }
+
+const navItemStyle = {
+    color: '#AAAAAA',
+    paddingRight: "10px"
+};
+
+const navItemStyleHover = {
+    color: '#AAAAAA',
+    paddingRight: "10px"
+};
 
 export default App;
