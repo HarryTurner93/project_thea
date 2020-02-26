@@ -9,6 +9,13 @@ import Dashboard from "./components/dashboard";
 import Summary from "./components/summary";
 import Login from "./components/login";
 
+//<NavItem href="/summary">
+//      <Nav.Link as={Link} to="/summary" >Summary</Nav.Link>
+//</NavItem>
+//<NavItem href="/login">
+//    <Nav.Link as={Link} to="/login" >Login</Nav.Link>
+//</NavItem>
+
 class App extends React.Component {
 
     render() {
@@ -21,14 +28,9 @@ class App extends React.Component {
                             <NavItem href="/">
                                 <Nav.Link as={Link} to="/" >Dashboard</Nav.Link>
                             </NavItem>
-                            <NavItem href="/summary">
-                                <Nav.Link as={Link} to="/summary" >Summary</Nav.Link>
-                            </NavItem>
                         </Nav>
                         <Nav>
-                            <NavItem href="/login">
-                                <Nav.Link as={Link} to="/login" >Login</Nav.Link>
-                            </NavItem>
+
                         </Nav>
                     </Navbar.Collapse>
                 </Navbar>
