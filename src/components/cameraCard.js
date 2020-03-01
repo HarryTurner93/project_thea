@@ -26,7 +26,7 @@ class CameraCard extends React.Component {
 
         return (
             <div style={{padding: "20px", paddingTop: "0px"}}>
-                <div style={{padding: "20px", backgroundColor:"#CFCFCF", display: "flex", flexDirection: "column", alignItems: "flex-start"}}>
+                <div style={{padding: "20px", backgroundColor:"#EEEEEE", display: "flex", flexDirection: "column", alignItems: "flex-start"}}>
                     <div><h4>Data: Images</h4></div>
                     <div style={{textAlign: 'justify', paddingTop: '10px', paddingBottom: '10px', }}>{information}</div>
                     { card_content }

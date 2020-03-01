@@ -89,7 +89,7 @@ class InfoCard extends React.Component {
 
         return (
             <div style={{padding: "20px", paddingTop: "0px"}}>
-                <div style={{padding: "20px", backgroundColor:"#CFCFCF", display: "flex", flexDirection: "column", alignItems: "flex-start"}}>
+                <div style={{padding: "20px", backgroundColor:"#EEEEEE", display: "flex", flexDirection: "column", alignItems: "flex-start"}}>
                     <div><h4>Basic Sensor Details</h4></div>
                     <div><b>Name:</b> {sensor.name}</div>
                     <div><b>Sensor Type:</b> {sensor.type}</div>
@@ -168,7 +168,7 @@ class ControlCard extends React.Component {
 
         return (
             <div style={{padding: "20px", paddingTop: "0px"}}>
-                <div style={{padding: "20px", backgroundColor:"#BBBBBB", display: "flex", flexDirection: "column", alignItems: "flex-start"}}>
+                <div style={{padding: "20px", backgroundColor:"#EEEEEE", display: "flex", flexDirection: "column", alignItems: "flex-start"}}>
                     <div><h4>Control</h4></div>
                     <div style={{display: 'flex'}}>
                         <DeleteSensorButton
@@ -213,7 +213,7 @@ class SensorSummaryCard extends React.Component {
 
         return (
             <div style={{paddingTop: '20px', width: '100%'}}>
-                <Card style={{width: '100%', backgroundColor: '#9ECDE9'}}>
+                <Card style={{width: '100%', backgroundColor: '#EEEEEE'}}>
                   <CardContent style={{display: 'flex', flexDirection: 'column', alignItems: 'flex-start'}}>
                     <Typography variant="h5" component="h2">
                         {sensor.name}
