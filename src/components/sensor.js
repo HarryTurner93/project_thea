@@ -2,20 +2,19 @@ import React, { PureComponent } from "react";
 import {Marker} from "react-map-gl";
 import { sensor_data, detection_data } from "../fake_data/sensor_data";
 import Tooltip from '@material-ui/core/Tooltip';
-import { DeleteSensorButton, EditSensorLocationButton } from "./buttons";
+import { DeleteSensorButton } from "./buttons";
 import CloseIcon from "@material-ui/icons/Close";
-import DeleteIcon from '@material-ui/icons/Delete';
-import EditLocationIcon from '@material-ui/icons/EditLocation';
+import CameraCard from "./cameraCard";
+import PollutionCard from "./pollutionCard";
+import NoDataCard from "./noDataCard";
 
 
 import IconButton from "@material-ui/core/IconButton";
-import MediaCard from "./mediaCard";
 import Card from '@material-ui/core/Card';
 import Button from '@material-ui/core/Button';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
-import ChartCard from "./chartCard";
 
 // Some global settings.
 const ICON_SIZE = 80;
@@ -90,7 +89,7 @@ class InfoCard extends React.Component {
 
         return (
             <div style={{padding: "20px", paddingTop: "0px"}}>
-                <div style={{padding: "20px", backgroundColor:"#D1D1C6", display: "flex", flexDirection: "column", alignItems: "flex-start"}}>
+                <div style={{padding: "20px", backgroundColor:"#CFCFCF", display: "flex", flexDirection: "column", alignItems: "flex-start"}}>
                     <div><h4>Basic Sensor Details</h4></div>
                     <div><b>Name:</b> {sensor.name}</div>
                     <div><b>Sensor Type:</b> {sensor.type}</div>
@@ -129,50 +128,32 @@ class TitleCard extends React.Component {
 class DataCard extends React.Component {
 
     render() {
-        // Deconstruct props.
-        const { sensor_name } = this.props;
 
         // Find the sensor with the right name.
-        const sensor = sensor_data.filter(sensor => sensor.name === sensor_name)[0];
+        const sensor = sensor_data.filter(sensor => sensor.name === this.props.sensor_name)[0];
 
-        // Get detction data.
-        const data = detection_data.filter(data => data.sensor_id === sensor.id);
+        // Get detection data for that sensor.
+        const data = detection_data.filter(data => data.sensor_id === sensor.id)[0];
 
-        // Compute the card content based on the detection data.
-        let card_content = <div>No data available yet.</div>;
-        if (data.length > 0) {
-            if (data[0].type === 'image') {
-                card_content = <div style={{display: 'flex'}}>
-                {data.map((d) =>
-                    <div style={{padding: '10px'}}>
-                        <MediaCard
-                            image={d.image}
-                            title={d.title}
-                            time_seen={d.time_seen}
-                        />
-                    </div>
-                )}
-                </div>
-            }
-            else {
-                card_content = <div style={{display: 'flex'}}>
-                {data.map((d) =>
-                    <div>
-                        <ChartCard/>
-                    </div>
-                )}
-                </div>
-            }
+        // Decide which card to show based on the detection data type.
+        let card = <NoDataCard/>;
+        if (data.type === 'camera') {
+            card = <CameraCard
+                information={data.info}
+                data={data.data}
+            />
+        }
+        else if (data.type === 'pollution') {
+            card = <PollutionCard
+                information={data.info}
+                source_site={data.site}
+                api={data.api}
+                y_axis_label={data.y_axis_label}
+            />
         }
 
-        return (
-            <div style={{padding: "20px", paddingTop: "0px"}}>
-                <div style={{padding: "20px", backgroundColor:"#D1D1C6", display: "flex", flexDirection: "column", alignItems: "flex-start"}}>
-                    <div><h4>Data</h4></div>
-                    {card_content}
-                </div>
-            </div>
-        );
+        // Simply render the appropriate card component.
+        return ( card );
     }
 }
 
@@ -187,7 +168,7 @@ class ControlCard extends React.Component {
 
         return (
             <div style={{padding: "20px", paddingTop: "0px"}}>
-                <div style={{padding: "20px", backgroundColor:"#D1D1C6", display: "flex", flexDirection: "column", alignItems: "flex-start"}}>
+                <div style={{padding: "20px", backgroundColor:"#BBBBBB", display: "flex", flexDirection: "column", alignItems: "flex-start"}}>
                     <div><h4>Control</h4></div>
                     <div style={{display: 'flex'}}>
                         <DeleteSensorButton
@@ -232,7 +213,7 @@ class SensorSummaryCard extends React.Component {
 
         return (
             <div style={{paddingTop: '20px', width: '100%'}}>
-                <Card style={{width: '100%', backgroundColor: '#D1D1C6'}}>
+                <Card style={{width: '100%', backgroundColor: '#9ECDE9'}}>
                   <CardContent style={{display: 'flex', flexDirection: 'column', alignItems: 'flex-start'}}>
                     <Typography variant="h5" component="h2">
                         {sensor.name}

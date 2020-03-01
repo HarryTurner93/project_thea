@@ -12,7 +12,7 @@ class Map extends React.Component {
                 height: "100vh",
                 latitude: 51.5084,
                 longitude: -2.5927,
-                zoom: 16,
+                zoom: 15,
             }
         };
 
@@ -66,6 +66,7 @@ class Map extends React.Component {
                 {(this.state.viewport.zoom >= 15)
                     ? sensor_data.map((sensor, index) => (
                         <SensorIcon
+                            key={index}
                             sensor={sensor}
                             index={index}
                             onClick={this._onClickMarker}
