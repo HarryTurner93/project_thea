@@ -1,7 +1,8 @@
 import React from "react";
 import {Map} from "./map";
 import {TabBrowser} from "./tabBrowser";
-import {sensor_data} from "../fake_data/sensor_data";
+import {sensor_data, alert_data} from "../fake_data/fake_data";
+import nextId from "react-id-generator";
 
 class Dashboard extends React.Component {
 
@@ -9,12 +10,15 @@ class Dashboard extends React.Component {
         super(props);
         this.state = {
             tabs: [],
-            current_tab_key: "dashboard",
-            sensors: Array.from(sensor_data)
+            current_tab_key: "sensors",
+            sensors: Array.from(sensor_data),
+            alerts: Array.from(alert_data)
         };
 
         // Bind all handler functions.
         this.callbackRemoveSensor = this.callbackRemoveSensor.bind(this);
+        this.cb_remove_alert = this.cb_remove_alert.bind(this);
+        this.cb_add_alert = this.cb_add_alert.bind(this);
         this.removeTab = this.removeTab.bind(this);
         this.addTab = this.addTab.bind(this);
         this.setTab = this.setTab.bind(this);
@@ -39,11 +43,30 @@ class Dashboard extends React.Component {
         })
     }
 
+    // Call back function to remove an alert.
+    cb_remove_alert (alert_id) {
+
+        // Remove the alert from the state.
+        this.setState((state) => {
+            const new_alerts = state.alerts.filter(alert => alert.id !== alert_id);
+            return {alerts: new_alerts}
+        })
+    }
+
+    // Call back function to remove an alert.
+    cb_add_alert (alert_name) {
+
+        // Add alert to the current state.
+        this.setState((state, props) => ({
+            alerts: state.alerts.concat({"name": alert_name, "id": nextId('alert')})
+        }));
+    }
+
     // Call back function to remove a tab from the browser.
     removeTab (id) {
         this.setState((state) => {
             const new_tabs = state.tabs.filter(tab => tab.id !== id);
-            return {tabs: new_tabs, current_tab_key: "dashboard"}
+            return {tabs: new_tabs, current_tab_key: "sensors"}
         })
     }
 
@@ -80,12 +103,15 @@ class Dashboard extends React.Component {
                     <div style={{flex: 1}}>
                         <TabBrowser
                             sensor_data={this.state.sensors}
+                            alert_data={this.state.alerts}
                             tabs={this.state.tabs}
                             add_tab_cb={this.addTab}
                             current_tab_key={this.state.current_tab_key}
                             remove_tab_cb={this.removeTab}
                             set_tab_cb={this.setTab}
                             callbackRemoveSensor={this.callbackRemoveSensor}
+                            cb_remove_alert={this.cb_remove_alert}
+                            cb_add_alert={this.cb_add_alert}
                         />
                     </div>
                 </div>

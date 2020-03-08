@@ -1,6 +1,6 @@
 import React, { PureComponent } from "react";
 import {Marker} from "react-map-gl";
-import { sensor_data, detection_data } from "../fake_data/sensor_data";
+import { sensor_data, detection_data } from "../fake_data/fake_data";
 import Tooltip from '@material-ui/core/Tooltip';
 import { DeleteSensorButton } from "./buttons";
 import CloseIcon from "@material-ui/icons/Close";

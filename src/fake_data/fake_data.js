@@ -63,4 +63,11 @@ const detection_data = [
 
 ];
 
-export { sensor_data, detection_data };
+let alert_data = [
+    {"id": 1, "name": "badger_alert", "sensor": 3,
+        "notification_medium": "an email", "trigger": "detects", "target": "a badger"},
+    {"id": 2, "name": "my_pollution_alert", "sensor": 1,
+        "notification_medium": "a text", "trigger": "is greater than", "target": "40 ppm"}
+];
+
+export { sensor_data, detection_data, alert_data };
