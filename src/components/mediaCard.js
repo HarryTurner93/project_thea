@@ -29,7 +29,6 @@ export default function MediaCard(props) {
         />
         <CardContent style={{display: 'flex', flexDirection: 'column', alignItems: 'flex-start'}}>
           <Typography gutterBottom variant="h5" component="h2">{props.title}</Typography>
-          <Typography gutterBottom variant="subtitle1" component="subtitle1">Seen {props.time_seen} ago.</Typography>
         </CardContent>
       </CardActionArea>
     </Card>

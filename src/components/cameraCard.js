@@ -6,7 +6,7 @@ class CameraCard extends React.Component {
     render() {
 
         // Deconstruct props.
-        const { data, information } = this.props;
+        const { data } = this.props;
 
         // Compute the card content based on the data.
         let card_content = <div>No data available yet.</div>;
@@ -14,11 +14,7 @@ class CameraCard extends React.Component {
             card_content = <div style={{display: 'flex'}}>
             {data.map((d) =>
                 <div key={d.id} style={{padding: '10px'}}>
-                    <MediaCard
-                        image={d.image}
-                        title={d.title}
-                        time_seen={d.time_seen}
-                    />
+                    <MediaCard image={d.image} title={d.title} />
                 </div>
             )}
             </div>
@@ -27,8 +23,7 @@ class CameraCard extends React.Component {
         return (
             <div style={{padding: "20px", paddingTop: "0px"}}>
                 <div style={{padding: "20px", backgroundColor:"#EEEEEE", display: "flex", flexDirection: "column", alignItems: "flex-start"}}>
-                    <div><h4>Data: Images</h4></div>
-                    <div style={{textAlign: 'justify', paddingTop: '10px', paddingBottom: '10px', }}>{information}</div>
+                    <div><h4>Recently Detected Species</h4></div>
                     { card_content }
                 </div>
             </div>

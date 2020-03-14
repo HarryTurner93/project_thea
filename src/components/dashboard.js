@@ -1,7 +1,7 @@
 import React from "react";
-import {Map} from "./map";
+import {Map} from "./map/Map";
 import {TabBrowser} from "./tabBrowser";
-import {sensor_data, alert_data} from "../fake_data/fake_data";
+import {sensor_data} from "../fake_data/fake_data";
 import nextId from "react-id-generator";
 
 class Dashboard extends React.Component {
@@ -10,9 +10,8 @@ class Dashboard extends React.Component {
         super(props);
         this.state = {
             tabs: [],
-            current_tab_key: "sensors",
-            sensors: Array.from(sensor_data),
-            alerts: Array.from(alert_data)
+            current_tab_key: "traps",
+            sensors: Array.from(sensor_data)
         };
 
         // Bind all handler functions.
@@ -89,6 +88,15 @@ class Dashboard extends React.Component {
         this.setState({current_tab_key: eventKey})
     }
 
+    callbackEditSensorLocation(lngLat, sensorID) {
+        this.setState({
+            sensors: this.state.sensors.map(el => (el.id === sensorID ? {...el, longitude: lngLat[0], latitude: lngLat[1]} : el))
+        });
+
+        // Clear pop ups on the map.
+        this.mapRef.current.clearPopUp();
+    }
+
     render() {
         return (
             <main className="App">
@@ -96,6 +104,7 @@ class Dashboard extends React.Component {
                     <div style={{flex: 1}}>
                         <Map
                             sensor_data={this.state.sensors}
+                            callbackEditSensorLocation={this.callbackEditSensorLocation.bind(this)}
                             add_tab_cb={this.addTab}
                             ref={this.mapRef}
                         />

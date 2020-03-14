@@ -1,6 +1,6 @@
 import React from "react";
-import ReactMapGL, {Marker, Popup} from "react-map-gl";
-import {SensorIcon, SensorBite} from "./sensor";
+import ReactMapGL, {Popup} from "react-map-gl";
+import {SensorIcon, SensorBite} from "../sensor";
 
 class Map extends React.Component {
 
@@ -25,10 +25,6 @@ class Map extends React.Component {
 
     _onClickMarker = city => {
         this.setState({popupInfo: city});
-    };
-
-    _onMarkerDragEnd = event => {
-        console.log(event);
     };
 
     _renderPopup() {
@@ -70,7 +66,7 @@ class Map extends React.Component {
                             sensor={sensor}
                             index={index}
                             onClick={this._onClickMarker}
-                            onMarkerDragEnd={this._onMarkerDragEnd}
+                            callbackEditSensorLocation={this.props.callbackEditSensorLocation}
                         />
                     ))
                     : null
