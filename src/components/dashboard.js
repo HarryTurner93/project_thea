@@ -65,7 +65,7 @@ class Dashboard extends React.Component {
     removeTab (id) {
         this.setState((state) => {
             const new_tabs = state.tabs.filter(tab => tab.id !== id);
-            return {tabs: new_tabs, current_tab_key: "sensors"}
+            return {tabs: new_tabs, current_tab_key: "traps"}
         })
     }
 

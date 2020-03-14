@@ -36,7 +36,7 @@ class SensorIcon extends React.Component {
                 latitude={sensor.latitude}
             >
                 <div style={{cursor: 'pointer'}} onClick={() => onClick(sensor)}>
-                    <Pin size={50} />
+                    <Pin size={40} />
                 </div>
             </Marker>
         );

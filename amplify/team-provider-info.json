@@ -1,0 +1,28 @@
+{
+    "dev": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-projectthea-dev-193339-authRole",
+            "UnauthRoleArn": "arn:aws:iam::664735937512:role/amplify-projectthea-dev-193339-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::664735937512:role/amplify-projectthea-dev-193339-authRole",
+            "Region": "eu-west-2",
+            "DeploymentBucketName": "amplify-projectthea-dev-193339-deployment",
+            "UnauthRoleName": "amplify-projectthea-dev-193339-unauthRole",
+            "StackName": "amplify-projectthea-dev-193339",
+            "StackId": "arn:aws:cloudformation:eu-west-2:664735937512:stack/amplify-projectthea-dev-193339/c1244260-662a-11ea-b835-060395953c4e",
+            "AmplifyAppId": "d232hdqkff17qe"
+        },
+        "categories": {
+            "hosting": {
+                "amplifyhosting": {
+                    "appId": "d232hdqkff17qe",
+                    "type": "cicd"
+                }
+            },
+            "auth": {
+                "auth": {
+                    "hostedUIProviderCreds": "[]"
+                }
+            }
+        }
+    }
+}

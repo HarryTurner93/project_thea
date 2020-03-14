@@ -79,4 +79,6 @@ class DeleteSensorButton extends React.Component {
     }
 }
 
+
+
 export { DeleteSensorButton };
