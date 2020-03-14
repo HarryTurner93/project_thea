@@ -8,7 +8,6 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
 import Tooltip from "@material-ui/core/Tooltip";
-import EditLocationIcon from "@material-ui/icons/EditLocation";
 
 class DeleteSensorButton extends React.Component {
 

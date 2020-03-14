@@ -98,6 +98,7 @@ class Dashboard extends React.Component {
     }
 
     render() {
+
         return (
             <main className="App">
                 <div style={{display: 'flex'}}>
