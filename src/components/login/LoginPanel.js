@@ -33,7 +33,7 @@ class BuildPanel extends React.Component {
         Auth.signIn({username: this.state.username, password: this.state.password})
             .then((user) => {
                 console.log(user);
-                window.location.replace("/");
+                window.location.replace("/portal");
             })
             .catch((err) => {
                 console.log(err)
