@@ -44,7 +44,7 @@ class App extends React.Component {
                     <Route path="/login">
                         <LoginPage />
                     </Route>
-                    <Route path="/portal/">
+                    <Route path="/portal">
                         {this.state.user !== null ? <AuthorisedArea /> : null }
                     </Route>
                 </Switch>
