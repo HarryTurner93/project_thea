@@ -1,8 +1,8 @@
 {
-    "identityPoolName": "auth_identitypool_6716c992",
+    "identityPoolName": "projecttheac2a73990_identitypool_c2a73990",
     "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "auth4cd5bf43",
-    "userPoolName": "thea_users",
+    "resourceNameTruncated": "projecc2a73990",
+    "userPoolName": "projecttheac2a73990_userpool_c2a73990",
     "autoVerifiedAttributes": [
         "email"
     ],
@@ -28,19 +28,10 @@
     "userpoolClientReadAttributes": [
         "email"
     ],
-    "userpoolClientLambdaRole": "auth4cd5bf43_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "projecc2a73990_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "useDefault": "defaultSocial",
+    "resourceName": "projecttheac2a73990",
     "authSelections": "identityPoolAndUserPool",
-    "resourceName": "auth",
-    "usernameAttributes": [
-        "email"
-    ],
-    "userPoolGroups": false,
-    "adminQueries": false,
-    "triggers": "{}",
-    "hostedUI": true,
-    "userPoolGroupList": [],
     "authRoleArn": {
         "Fn::GetAtt": [
             "AuthRole",
@@ -53,13 +44,20 @@
             "Arn"
         ]
     },
+    "useDefault": "defaultSocial",
+    "hostedUI": true,
+    "usernameAttributes": [
+        "email"
+    ],
+    "triggers": "{}",
+    "hostedUIDomainName": "theaportal",
+    "authProvidersUserPool": [],
+    "hostedUIProviderMeta": "[]",
+    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"https://localhost:3000/\"],\"LogoutURLs\":[\"https://localhost:3000/\"]}",
+    "userPoolGroupList": [],
     "parentStack": {
         "Ref": "AWS::StackId"
     },
     "permissions": [],
-    "dependsOn": [],
-    "hostedUIDomainName": "theaportal",
-    "authProvidersUserPool": [],
-    "hostedUIProviderMeta": "[]",
-    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"https://localhost:3000/\"],\"LogoutURLs\":[\"https://localhost:3000/\"]}"
+    "dependsOn": []
 }

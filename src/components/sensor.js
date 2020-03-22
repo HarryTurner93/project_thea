@@ -117,6 +117,7 @@ class DataCard extends React.Component {
 class ControlCard extends React.Component {
 
     render() {
+
         // Deconstruct props.
         const { sensor_name, callbackRemoveSensor, tab_id } = this.props;
 
@@ -163,7 +164,7 @@ class SensorSummaryCard extends React.Component {
     render() {
 
         // Deconstruct props.
-        const { sensor_name, add_tab_cb } = this.props;
+        const { sensor_name, add_tab_cb, callbackFindInMap } = this.props;
 
         // Find the sensor with the right name.
         const sensor = sensor_data.filter(sensor => sensor.name === sensor_name)[0];
@@ -171,17 +172,18 @@ class SensorSummaryCard extends React.Component {
         return (
             <div style={{paddingTop: '20px', width: '100%'}}>
                 <Card style={{width: '100%', backgroundColor: '#EEEEEE'}}>
-                  <CardContent style={{display: 'flex', flexDirection: 'column', alignItems: 'flex-start'}}>
-                    <Typography variant="h5" component="h2">
-                        {sensor.name}
-                    </Typography>
-                    <Typography color="textSecondary">
-                        {sensor.type}
-                    </Typography>
-                  </CardContent>
-                  <CardActions>
-                    <Button size="small" onClick={() => add_tab_cb(sensor.name)}>Details</Button>
-                  </CardActions>
+                    <CardContent style={{display: 'flex', flexDirection: 'column', alignItems: 'flex-start'}}>
+                        <Typography variant="h5" component="h2">
+                            {sensor.name}
+                        </Typography>
+                        <Typography color="textSecondary">
+                            {sensor.type}
+                        </Typography>
+                    </CardContent>
+                    <CardActions>
+                        <Button size="small" onClick={() => add_tab_cb(sensor.name)}>Details</Button>
+                        <Button size="small" onClick={() => callbackFindInMap(sensor.longitude, sensor.latitude)}>Find in Map</Button>
+                    </CardActions>
                 </Card>
             </div>
         )

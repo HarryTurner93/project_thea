@@ -92,9 +92,10 @@ class Dashboard extends React.Component {
         this.setState({
             sensors: this.state.sensors.map(el => (el.id === sensorID ? {...el, longitude: lngLat[0], latitude: lngLat[1]} : el))
         });
+    }
 
-        // Clear pop ups on the map.
-        this.mapRef.current.clearPopUp();
+    callbackFindInMap(longitude, latitude) {
+        this.mapRef.current._goToViewport({longitude, latitude})
     }
 
     render() {
@@ -120,6 +121,7 @@ class Dashboard extends React.Component {
                             remove_tab_cb={this.removeTab}
                             set_tab_cb={this.setTab}
                             callbackRemoveSensor={this.callbackRemoveSensor}
+                            callbackFindInMap={this.callbackFindInMap.bind(this)}
                             cb_remove_alert={this.cb_remove_alert}
                             cb_add_alert={this.cb_add_alert}
                         />

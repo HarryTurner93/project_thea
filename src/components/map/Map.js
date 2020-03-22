@@ -1,5 +1,5 @@
 import React from "react";
-import ReactMapGL, {Popup} from "react-map-gl";
+import ReactMapGL, {Popup, FlyToInterpolator} from "react-map-gl";
 import {SensorIcon, SensorBite} from "../sensor";
 
 class Map extends React.Component {
@@ -12,7 +12,7 @@ class Map extends React.Component {
                 height: "100vh",
                 latitude: 51.5084,
                 longitude: -2.5927,
-                zoom: 15,
+                zoom: 16,
             }
         };
 
@@ -25,6 +25,20 @@ class Map extends React.Component {
 
     _onClickMarker = city => {
         this.setState({popupInfo: city});
+    };
+
+    _onViewportChange = viewport =>
+        this.setState({viewport: {...this.state.viewport, ...viewport}
+    });
+
+    _goToViewport = ({longitude, latitude}) => {
+        this._onViewportChange({
+            longitude,
+            latitude,
+            zoom: 16,
+            transitionInterpolator: new FlyToInterpolator({speed: 1.2}),
+            transitionDuration: 'auto'
+        });
     };
 
     _renderPopup() {

@@ -8,7 +8,7 @@ class TabBrowser extends React.Component {
     render() {
 
         let { tabs, sensor_data, add_tab_cb, remove_tab_cb, current_tab_key, set_tab_cb,
-              callbackRemoveSensor} = this.props;
+              callbackRemoveSensor, callbackFindInMap} = this.props;
 
         return (
             <Tabs id="controlled_tab"
@@ -18,7 +18,14 @@ class TabBrowser extends React.Component {
                     <div style={{padding: "20px"}}>
                         <div style={{padding: "0px", color: '#575757', display: "flex", flexDirection: "column", alignItems: "flex-start"}}>
                             <div style={{paddingBottom: '10px'}}><h4>Your Traps</h4></div>
-                            {sensor_data.map(sensor => (<SensorSummaryCard key={sensor.id} add_tab_cb={add_tab_cb} sensor_name={sensor.name}/>))}
+                            {sensor_data.map(sensor => (
+                                <SensorSummaryCard
+                                    key={sensor.id}
+                                    add_tab_cb={add_tab_cb}
+                                    sensor_name={sensor.name}
+                                    callbackFindInMap={callbackFindInMap}
+                                />
+                                ))}
                         </div>
                     </div>
                 </Tab>
