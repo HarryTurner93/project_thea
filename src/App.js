@@ -41,7 +41,7 @@ class App extends React.Component {
                     <Route exact path="/">
                         <LandingPage user={this.state.user}/>
                     </Route>
-                    <Route exact path="/login/">
+                    <Route path="/login">
                         <LoginPage />
                     </Route>
                     <Route path="/portal/">
@@ -82,7 +82,7 @@ class AuthorisedArea extends React.Component {
                     </Navbar.Collapse>
                 </Navbar>
                 <Switch>
-                    <Route exact path="/portal/">
+                    <Route path="/portal">
                         <Dashboard />
                     </Route>
                 </Switch>
