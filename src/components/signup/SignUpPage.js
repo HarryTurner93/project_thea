@@ -2,9 +2,9 @@ import React from "react";
 
 import {Nav, Navbar, NavItem} from "react-bootstrap";
 import {Link} from "react-router-dom";
-import LoginPanel from "./LoginPanel";
+import SignUpPanel from "./SignUpPanel";
 
-class LoginPage extends React.Component {
+class SignUpPage extends React.Component {
 
     render() {
 
@@ -28,21 +28,13 @@ class LoginPage extends React.Component {
                                     <Nav.Link as={Link} to="/" >Blog</Nav.Link>
                                 </NavItem>
                             </Nav>
-                            <Nav>
-                                <NavItem href="/">
-                                    <Nav.Link as={Link} to="/login" >Login to the Portal</Nav.Link>
-                                </NavItem>
-                            </Nav>
                         </Navbar.Collapse>
                     </Navbar>
                 </div>
                 <div>
-                    <h1 style={{paddingLeft:'100px', paddingTop:'100px'}}>Sign In.</h1>
-                    <div style={{paddingLeft:'100px', paddingTop:'25px', width: '40%'}}>
-                        <LoginPanel/>
-                    </div>
+                    <h1 style={{paddingLeft:'100px', paddingTop:'100px'}}>Register your Interest.</h1>
                     <div style={{paddingLeft:'100px', paddingTop:'25px', width: '60%'}}>
-                        <p style={{color: "#808080"}}>Not got an account? <a href="/signup">Sign Up here.</a></p>
+                        <SignUpPanel/>
                     </div>
                 </div>
             </div>
@@ -50,4 +42,4 @@ class LoginPage extends React.Component {
     }
 }
 
-export default LoginPage;
+export default SignUpPage;

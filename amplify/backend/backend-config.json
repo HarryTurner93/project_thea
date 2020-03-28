@@ -11,5 +11,22 @@
 			"providerPlugin": "awscloudformation",
 			"dependsOn": []
 		}
+	},
+	"api": {
+		"api": {
+			"service": "AppSync",
+			"providerPlugin": "awscloudformation",
+			"output": {
+				"authConfig": {
+					"additionalAuthenticationProviders": [],
+					"defaultAuthentication": {
+						"authenticationType": "AMAZON_COGNITO_USER_POOLS",
+						"userPoolConfig": {
+							"userPoolId": "authprojecttheac2a73990"
+						}
+					}
+				}
+			}
+		}
 	}
 }

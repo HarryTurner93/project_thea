@@ -8,11 +8,13 @@ import banner_1 from "../fake_data/fox-banner.jpg";
 import banner_2 from "../fake_data/banner-2.jpg";
 import {Nav, Navbar, NavItem} from "react-bootstrap";
 import {Link} from "react-router-dom";
-import { Auth } from 'aws-amplify';
+import {API, Auth, graphqlOperation} from 'aws-amplify';
 
 import PermMediaIcon from '@material-ui/icons/PermMedia';
 import DescriptionIcon from '@material-ui/icons/Description';
 import DoubleArrowIcon from '@material-ui/icons/DoubleArrow';
+import TextField from "@material-ui/core/TextField";
+import * as mutations from "../graphql/mutations";
 
 class LandingPage extends React.Component {
 
@@ -27,7 +29,6 @@ class LandingPage extends React.Component {
             })
             .catch(err => console.log(err));
     }
-
 
     render() {
 
@@ -65,7 +66,6 @@ class LandingPage extends React.Component {
                                     <Nav.Link as={Link} to="/" >Blog</Nav.Link>
                                 </NavItem>
                             </Nav>
-                            {login_button}
                         </Navbar.Collapse>
                     </Navbar>
                 </div>
@@ -94,6 +94,14 @@ class LandingPage extends React.Component {
                             </Carousel.Caption>
                         </Carousel.Item>
                     </Carousel>
+                </div>
+                <div>
+                    <Jumbotron>
+                        <h1>Register your interest.</h1>
+                        <h5 style={{paddingTop: '20px', paddingBottom: '20px'}}><i>We're working hard to get this up and running as soon as possible.
+                            If you want to be notified when we launch, register your interest below.</i></h5>
+                        <Button variant="primary" href="/signup">Register your Interest</Button>
+                    </Jumbotron>
                 </div>
                 <div style={{display: 'flex'}}>
                     <div style={{width: '33%', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
@@ -135,16 +143,6 @@ class LandingPage extends React.Component {
                             minimise the amount of time you spend analysing and tagging photos.</p>
                         </div>
                     </div>
-                </div>
-                <div>
-                    <Jumbotron>
-                        <h1>Let us handle the boring bits...</h1>
-                        <p>Our software platform makes managing your camera traps and their data simple. Let us take
-                        care of processing and tagging images, while you focus on the more important stuff.</p>
-                        <p>
-                            <Button variant="primary">Find Out What We Do</Button>
-                        </p>
-                    </Jumbotron>
                 </div>
                 <div style={{display: 'flex', 'backgroundColor': '#EEEEEE', padding: '10px'}}>
                     <div style={{width: '33%', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>

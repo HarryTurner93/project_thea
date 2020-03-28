@@ -1,0 +1,26 @@
+type Interest @model {
+  id: ID!
+  email: String!
+}
+type User @model {
+  id: ID!
+  zones: [Zone] @connection(name: "UserZones")
+}
+type Zone @model {
+  id: ID!
+  name: String!
+  user: User @connection(name: "UserZones")
+  sensors: [Sensor] @connection(name: "ZoneSensors")
+}
+type Sensor @model {
+  id: ID!
+  content: String
+  zone: Zone @connection(name: "ZoneSensors")
+  images: [Image] @connection(name: "SensorImages")
+}
+type Image @model {
+  id: ID!
+  url: String
+  classes: String
+  sensor: Sensor @connection(name: "SensorImages")
+}
