@@ -88,6 +88,9 @@ class AuthorisedArea extends React.Component {
         // Destructure props.
         let { user } = this.props;
 
+        // Destructure state.
+        let { zone } = this.state;
+
         return (
             <Router>
                 <Navbar bg="dark" variant="dark">
@@ -109,7 +112,7 @@ class AuthorisedArea extends React.Component {
 
                 <Switch>
                     <Route path="/portal">
-                        <Dashboard />
+                        <Dashboard zone={zone}/>
                     </Route>
                 </Switch>
 

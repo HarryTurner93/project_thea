@@ -15,6 +15,9 @@ type Zone @model {
 type Sensor @model {
   id: ID!
   content: String
+  name: String
+  latitude: String
+  longitude: String
   zone: Zone @connection(name: "ZoneSensors")
   images: [Image] @connection(name: "SensorImages")
 }

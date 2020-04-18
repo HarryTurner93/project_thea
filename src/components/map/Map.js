@@ -66,12 +66,14 @@ class Map extends React.Component {
     render() {
 
         let { sensor_data } = this.props;
+
         return (
             <ReactMapGL
                 {...this.state.viewport}
                 onViewportChange={(viewport) => this.setState({viewport})}
                 mapStyle='mapbox://styles/hturner30/ck62e8klf0xzn1ithmmtve3iq'
                 mapboxApiAccessToken='pk.eyJ1IjoiaHR1cm5lcjMwIiwiYSI6ImNrNjJhZWFkdjBiNnMzbm1tNHh1cDNlMWsifQ.0ZiYTbXUCbaJ2mxlibJjDg'
+                getCursor={() => {'pointer'}}
                 >
                 {(this.state.viewport.zoom >= 12)
                     ? sensor_data.map((sensor, index) => (

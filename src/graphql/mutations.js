@@ -103,6 +103,9 @@ export const createZone = /* GraphQL */ `
         items {
           id
           content
+          name
+          latitude
+          longitude
         }
         nextToken
       }
@@ -127,6 +130,9 @@ export const updateZone = /* GraphQL */ `
         items {
           id
           content
+          name
+          latitude
+          longitude
         }
         nextToken
       }
@@ -151,6 +157,9 @@ export const deleteZone = /* GraphQL */ `
         items {
           id
           content
+          name
+          latitude
+          longitude
         }
         nextToken
       }
@@ -165,6 +174,9 @@ export const createSensor = /* GraphQL */ `
     createSensor(input: $input, condition: $condition) {
       id
       content
+      name
+      latitude
+      longitude
       zone {
         id
         name
@@ -194,6 +206,9 @@ export const updateSensor = /* GraphQL */ `
     updateSensor(input: $input, condition: $condition) {
       id
       content
+      name
+      latitude
+      longitude
       zone {
         id
         name
@@ -223,6 +238,9 @@ export const deleteSensor = /* GraphQL */ `
     deleteSensor(input: $input, condition: $condition) {
       id
       content
+      name
+      latitude
+      longitude
       zone {
         id
         name
@@ -256,6 +274,9 @@ export const createImage = /* GraphQL */ `
       sensor {
         id
         content
+        name
+        latitude
+        longitude
         zone {
           id
           name
@@ -279,6 +300,9 @@ export const updateImage = /* GraphQL */ `
       sensor {
         id
         content
+        name
+        latitude
+        longitude
         zone {
           id
           name
@@ -302,6 +326,9 @@ export const deleteImage = /* GraphQL */ `
       sensor {
         id
         content
+        name
+        latitude
+        longitude
         zone {
           id
           name

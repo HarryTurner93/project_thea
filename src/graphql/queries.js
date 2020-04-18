@@ -70,6 +70,9 @@ export const getZone = /* GraphQL */ `
         items {
           id
           content
+          name
+          latitude
+          longitude
         }
         nextToken
       }
@@ -102,6 +105,9 @@ export const getSensor = /* GraphQL */ `
     getSensor(id: $id) {
       id
       content
+      name
+      latitude
+      longitude
       zone {
         id
         name
@@ -133,6 +139,9 @@ export const listSensors = /* GraphQL */ `
       items {
         id
         content
+        name
+        latitude
+        longitude
         zone {
           id
           name
@@ -154,6 +163,9 @@ export const getImage = /* GraphQL */ `
       sensor {
         id
         content
+        name
+        latitude
+        longitude
         zone {
           id
           name
@@ -179,6 +191,9 @@ export const listImages = /* GraphQL */ `
         sensor {
           id
           content
+          name
+          latitude
+          longitude
         }
       }
       nextToken
