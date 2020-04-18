@@ -21,7 +21,7 @@ class TabBrowser extends React.Component {
                                 <SensorSummaryCard
                                     key={sensor.id}
                                     add_tab_cb={tabProps.addTab}
-                                    sensor_name={sensor.name}
+                                    sensor={sensor}
                                     callbackFindInMap={sensorProps.locateSensor}
                                 />
                                 ))}
@@ -29,16 +29,16 @@ class TabBrowser extends React.Component {
                     </div>
                 </Tab>
                 {tabProps.allTabs.map(function(tab){
+
+                    // Find the sensor with the right name.
+                    const sensor = sensorProps.allSensors.filter(sensor => sensor.name === tab.eventKey)[0];
+
                     return (
                         <Tab key={tab.eventKey} eventKey={tab.eventKey} title={tab.title}>
-                            <TitleCard sensor_name={tab.eventKey} remove_tab_cb={tabProps.removeTab} tab_id={tab.id}/>
-                            <InfoCard sensor_name={tab.eventKey} remove_tab_cb={tabProps.removeTab} tab_id={tab.id}/>
-                            <DataCard sensor_name={tab.eventKey}/>
-                            <ControlCard
-                                sensor_name={tab.eventKey}
-                                callbackRemoveSensor={sensorProps.removeSensor}
-                                tab_id={tab.id}
-                            />
+                            <TitleCard sensor={sensor} remove_tab_cb={tabProps.removeTab} tab_id={tab.id}/>
+                            <InfoCard sensor={sensor} remove_tab_cb={tabProps.removeTab} tab_id={tab.id}/>
+                            <DataCard sensor={sensor}/>
+                            <ControlCard sensor={sensor} callbackRemoveSensor={sensorProps.removeSensor} tab_id={tab.id}/>
                         </Tab>
                     )
                 })}

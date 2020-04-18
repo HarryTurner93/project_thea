@@ -150,33 +150,32 @@ class Dashboard extends React.Component {
                             ref={this.mapRef}
                         />
                     </div>
+                    <div style={{flex: 1}}>
+                        <TabBrowser
+                            sensorProps={
+                                {
+                                    allSensors: sensors,
+                                    removeSensor: this.handleRemoveSensor.bind(this),
+                                    locateSensor: this.handleLocateSensor.bind(this)
+                                }
+                            }
+                           tabProps={
+                                {
+                                    allTabs: tabs,
+                                    currentTab: current_tab_key,
+                                    addTab: this.handleAddTab.bind(this),
+                                    removeTab: this.handleRemoveTab.bind(this),
+                                    changeTab: this.handleChangeTab.bind(this)
 
+                                }
+                            }
+                        />
+                    </div>
                 </div>
             </main>
         );
     }
 }
 
-//<div style={{flex: 1}}>
-//    <TabBrowser
-//        sensorProps={
-//            {
-//                allSensors: sensors,
-//                removeSensor: this.handleRemoveSensor.bind(this),
-//                locateSensor: this.handleLocateSensor.bind(this)
-//            }
-//        }
-//        tabProps={
-//            {
-//                allTabs: tabs,
-//                currentTab: current_tab_key,
-//                addTab: this.handleAddTab.bind(this),
-//                removeTab: this.handleRemoveTab.bind(this),
-//                changeTab: this.handleChangeTab.bind(this)
-//
-//            }
-//        }
-//    />
-//</div>
 
 export default Dashboard;

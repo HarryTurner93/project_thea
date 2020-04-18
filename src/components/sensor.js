@@ -52,10 +52,7 @@ class TitleCard extends React.Component {
 
     render() {
         // Deconstruct props.
-        const { sensor_name, remove_tab_cb, tab_id } = this.props;
-
-        // Find the sensor with the right name.
-        const sensor = sensor_data.filter(sensor => sensor.name === sensor_name)[0];
+        const { sensor, remove_tab_cb, tab_id } = this.props;
 
         return (
             <div style={{padding: "20px", display: "flex"}}>
@@ -74,18 +71,15 @@ class TitleCard extends React.Component {
 class InfoCard extends React.Component {
 
     render() {
-        // Deconstruct props.
-        const { sensor_name } = this.props;
 
-        // Find the sensor with the right name.
-        const sensor = sensor_data.filter(sensor => sensor.name === sensor_name)[0];
+        // Deconstruct props.
+        const { sensor } = this.props;
 
         return (
             <div style={{padding: "20px", paddingTop: "0px"}}>
                 <div style={{padding: "20px", backgroundColor:"#EEEEEE", display: "flex", flexDirection: "column", alignItems: "flex-start"}}>
                     <div><h4>Camera Trap Details</h4></div>
                     <div><b>Name:</b> {sensor.name}</div>
-                    <div><b>Created:</b> {sensor.created}</div>
                 </div>
             </div>
         );
@@ -97,20 +91,11 @@ class DataCard extends React.Component {
 
     render() {
 
-        // Find the sensor with the right name.
-        const sensor = sensor_data.filter(sensor => sensor.name === this.props.sensor_name)[0];
-
-        // Get detection data for that sensor.
-        const data = detection_data.filter(data => data.sensor_id === sensor.id)[0];
+        // Deconstruct props.
+        const { sensor } = this.props;
 
         // Decide which card to show based on the detection data type.
         let card = <NoDataCard/>;
-        if (data.type === 'camera') {
-            card = <CameraCard
-                information={data.info}
-                data={data.data}
-            />
-        }
 
         // Simply render the appropriate card component.
         return ( card );
@@ -123,10 +108,7 @@ class ControlCard extends React.Component {
     render() {
 
         // Deconstruct props.
-        const { sensor_name, callbackRemoveSensor, tab_id } = this.props;
-
-        // Find the sensor with the right name.
-        const sensor = sensor_data.filter(sensor => sensor.name === sensor_name)[0];
+        const { sensor, callbackRemoveSensor, tab_id } = this.props;
 
         return (
             <div style={{padding: "20px", paddingTop: "0px"}}>
@@ -168,10 +150,7 @@ class SensorSummaryCard extends React.Component {
     render() {
 
         // Deconstruct props.
-        const { sensor_name, add_tab_cb, callbackFindInMap } = this.props;
-
-        // Find the sensor with the right name.
-        const sensor = sensor_data.filter(sensor => sensor.name === sensor_name)[0];
+        const { sensor, add_tab_cb, callbackFindInMap } = this.props;
 
         return (
             <div style={{paddingTop: '20px', width: '100%'}}>
@@ -179,9 +158,6 @@ class SensorSummaryCard extends React.Component {
                     <CardContent style={{display: 'flex', flexDirection: 'column', alignItems: 'flex-start'}}>
                         <Typography variant="h5" component="h2">
                             {sensor.name}
-                        </Typography>
-                        <Typography color="textSecondary">
-                            {sensor.type}
                         </Typography>
                     </CardContent>
                     <CardActions>
