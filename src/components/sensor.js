@@ -20,12 +20,12 @@ class SensorIcon extends React.Component {
 
     handleDragEnd = event => {
 
-        this.props.callbackEditSensorLocation(event.lngLat, this.props.sensor.id);
+        this.props.callbackEditSensorLocation(event.lngLat, this.props.sensor);
     };
 
     render() {
 
-        const {sensor, index, onClick, zoomLevel} = this.props;
+        const {sensor, index, handleClick, zoomLevel} = this.props;
 
         // Compute pin size dynamically.
         let pinSizeControl = 2.5
@@ -39,7 +39,7 @@ class SensorIcon extends React.Component {
                 longitude={sensor.longitude}
                 latitude={sensor.latitude}
             >
-                <div style={{cursor: 'pointer'}} onClick={() => onClick(sensor)}>
+                <div style={{cursor: 'pointer'}} onDoubleClick={() => handleClick(sensor)}>
                     <Pin size={pinSize} />
                 </div>
             </Marker>
@@ -80,6 +80,8 @@ class InfoCard extends React.Component {
                 <div style={{padding: "20px", backgroundColor:"#EEEEEE", display: "flex", flexDirection: "column", alignItems: "flex-start"}}>
                     <div><h4>Camera Trap Details</h4></div>
                     <div><b>Name:</b> {sensor.name}</div>
+                    <div><b>ID:</b> {sensor.id}</div>
+                    <div><b>LatLong:</b> {sensor.latitude}, {sensor.longitude}</div>
                 </div>
             </div>
         );
@@ -116,7 +118,7 @@ class ControlCard extends React.Component {
                     <div><h4>Control</h4></div>
                     <div style={{display: 'flex'}}>
                         <DeleteSensorButton
-                            sensorID={sensor.id}
+                            sensor={sensor}
                             callbackRemoveSensor={callbackRemoveSensor}
                             tab_id={tab_id}
                         />

@@ -1,15 +1,10 @@
 import React from "react";
 import {Map} from "./map/Map";
 import {TabBrowser} from "./tabBrowser";
-import {sensor_data} from "../fake_data/fake_data";
-import nextId from "react-id-generator";
 import {API, graphqlOperation} from "aws-amplify";
 import * as queries from "../graphql/queries";
 import * as mutations from "../graphql/mutations";
-
-// Todo: Wrap up callbacks into single prop.
-// Todo: API calls to get sensors.
-// Todo: Think more carefully about when to pull from API when zone changes. Currently does it in render...
+import {sensor_data} from "../fake_data/fake_data";
 
 class Dashboard extends React.Component {
 
@@ -18,7 +13,8 @@ class Dashboard extends React.Component {
         this.state = {
             tabs: [],
             current_tab_key: "traps",
-            sensors: []
+            sensors: [],
+            cachedZoneID: null
         };
 
         // Create References.
@@ -29,7 +25,7 @@ class Dashboard extends React.Component {
     // #########
 
     // Pull all zones from the backend for the given zone. Update the state.
-    APICALL_getZoneSensors () {
+    APICALL_getZoneSensors (fly_to_zone) {
         API.graphql(graphqlOperation(queries.getZone, {id: this.props.zone.id}))
             .then((result) => {
 
@@ -47,32 +43,78 @@ class Dashboard extends React.Component {
                 ));
 
                 // Update with sensors
-                this.setState({sensors: mappedSensors});
+                this.setState({sensors: mappedSensors}, () => {
+
+                    // Fly to zone.
+                    if ( fly_to_zone ) {
+                        this.relocateToZone()
+                    }
+                });
 
             })
             .catch((result) => console.log(result));
     }
 
     // Push new zone to the backend for the given user. Update the state.
-    //APICALL_putZoneSensors () {
-    //    const payload = { name: "Behind House", latitude: "51.504", longitude: "-2.59", sensorZoneId: this.props.zone.id };
-    //    API.graphql(graphqlOperation(mutations.createSensor, {input: payload}))
-    //        .then((result) => {
-    //
-    //            // If the put was successful, then update state to the added zone.
-    //            this.APICALL_getZoneSensors();
-    //        })
-    //        .catch((result) => {
-    //
-    //        });
-    //}
+    APICALL_putZoneSensors (latitude, longitude, name) {
+        const payload = { name: name, latitude: latitude.toString(), longitude: longitude.toString(), sensorZoneId: this.props.zone.id };
+        API.graphql(graphqlOperation(mutations.createSensor, {input: payload}))
+            .then((result) => {
+
+                // If the put was successful, then update state to the added zone.
+                this.APICALL_getZoneSensors();
+            })
+            .catch((result) => {
+
+            });
+    }
+
+    // Remove sensor association with a zone. Update the state.
+    // Note that for now, it doesn't actually delete, just removes association with zone.
+    APICALL_deleteZoneSensors (sensor) {
+        const payload = {
+            id: sensor.id,
+            name: sensor.name,
+            sensorZoneId: "none"
+        };
+        API.graphql(graphqlOperation(mutations.updateSensor, {input: payload}))
+            .then((result) => {
+
+                // If the delete was successful, then pull the zones again (to update the state).
+                this.APICALL_getZoneSensors();
+            })
+            .catch((result) => {
+            });
+    }
+
+    // Update sensor location.
+    APICALL_moveZoneSensors (sensor, latitude, longitude) {
+        const payload = {
+            id: sensor.id,
+            latitude: latitude,
+            longitude: longitude
+        };
+        API.graphql(graphqlOperation(mutations.updateSensor, {input: payload}))
+            .then((result) => {
+
+                // If the delete was successful, then pull the zones again (to update the state).
+                this.APICALL_getZoneSensors();
+            })
+            .catch((result) => {
+            });
+    }
 
 
     // Handler Functions
     // #################
 
     // Called from ?
-    handleRemoveSensor (sensor_id, tab_id) {
+    handleCreateSensor(latitude, longitude, name) {
+        this.APICALL_putZoneSensors(latitude, longitude, name)
+    }
+
+    // Called from ?
+    handleRemoveSensor (sensor, tab_id) {
 
         // Clear pop ups on the map.
         this.mapRef.current.clearPopUp();
@@ -80,11 +122,8 @@ class Dashboard extends React.Component {
         // Now remove the tab from the browser.
         this.handleRemoveTab(tab_id);
 
-        // Now remove the sensor from the state.
-        this.setState((state) => {
-            const new_sensors = state.sensors.filter(sensor => sensor.id !== sensor_id);
-            return {sensors: new_sensors}
-        })
+        // Now update API.
+        this.APICALL_deleteZoneSensors(sensor)
     }
 
     // Called from ?
@@ -113,14 +152,38 @@ class Dashboard extends React.Component {
     // Called from ?
     handleChangeTab(eventKey) { this.setState({current_tab_key: eventKey}) }
 
-    handleMoveSensor(lngLat, sensorID) {
-        this.setState({
-            sensors: this.state.sensors.map(el => (el.id === sensorID ? {...el, longitude: lngLat[0], latitude: lngLat[1]} : el))
-        });
+    handleMoveSensor(lngLat, sensor) {
+
+        this.APICALL_moveZoneSensors(sensor, lngLat[1], lngLat[0])
     }
 
     // Called from ?
     handleLocateSensor(longitude, latitude) { this.mapRef.current._goToViewport({longitude, latitude}) }
+
+
+    // Functions
+    // #########
+
+    relocateToZone() {
+
+        // Create counts.
+        let latitudes = 0
+        let longitudes = 0
+
+        // Count up all positions.
+        this.state.sensors.map((sensor) => {
+            latitudes += sensor.latitude
+            longitudes += sensor.longitude
+            return null
+        });
+
+        // Average.
+        latitudes /= this.state.sensors.length;
+        longitudes /= this.state.sensors.length;
+
+        // Jump to position.
+        this.handleLocateSensor(longitudes, latitudes)
+    }
 
 
     // Render
@@ -131,9 +194,13 @@ class Dashboard extends React.Component {
         // Destructure props.
         let { zone } = this.props;
 
-        // Pull latest zones.
+        // If the zone has changed, pull latest.
         if ( zone ) {
-            this.APICALL_getZoneSensors()
+            if ( zone.id !== this.state.cachedZoneID) {
+                this.setState({cachedZoneID: zone.id}, () => {
+                    this.APICALL_getZoneSensors(true)
+                })
+            }
         }
 
         // Destructure state.
@@ -144,9 +211,18 @@ class Dashboard extends React.Component {
                 <div style={{display: 'flex'}}>
                     <div style={{flex: 1}}>
                         <Map
-                            sensor_data={sensors}
-                            callbackEditSensorLocation={this.handleMoveSensor.bind(this)}
-                            add_tab_cb={this.handleAddTab}
+                            sensorProps={
+                                {
+                                    allSensors: sensors,
+                                    handleCreateSensor: this.handleCreateSensor.bind(this),
+                                    handleMoveSensor: this.handleMoveSensor.bind(this)
+                                }
+                            }
+                            tabProps={
+                                {
+                                    handleAddTab: this.handleAddTab.bind(this)
+                                }
+                            }
                             ref={this.mapRef}
                         />
                     </div>

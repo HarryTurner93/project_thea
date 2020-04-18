@@ -42,7 +42,7 @@ class DeleteSensorButton extends React.Component {
         this.setState((state) => {
             return {open: false}
         });
-        this.props.callbackRemoveSensor(this.props.sensorID, this.props.tab_id);
+        this.props.callbackRemoveSensor(this.props.sensor, this.props.tab_id);
     }
 
     render() {
