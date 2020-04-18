@@ -25,7 +25,11 @@ class SensorIcon extends React.Component {
 
     render() {
 
-        const {sensor, index, onClick} = this.props;
+        const {sensor, index, onClick, zoomLevel} = this.props;
+
+        // Compute pin size dynamically.
+        let pinSizeControl = 2.5
+        let pinSize = zoomLevel * pinSizeControl / (((16 - zoomLevel) / 10) + 1)
 
         return (
             <Marker
@@ -36,7 +40,7 @@ class SensorIcon extends React.Component {
                 latitude={sensor.latitude}
             >
                 <div style={{cursor: 'pointer'}} onClick={() => onClick(sensor)}>
-                    <Pin size={40} />
+                    <Pin size={pinSize} />
                 </div>
             </Marker>
         );

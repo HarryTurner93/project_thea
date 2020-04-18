@@ -12,7 +12,7 @@ class Map extends React.Component {
                 height: "100vh",
                 latitude: 51.5084,
                 longitude: -2.5927,
-                zoom: 16,
+                zoom: 14,
             }
         };
 
@@ -35,7 +35,7 @@ class Map extends React.Component {
         this._onViewportChange({
             longitude,
             latitude,
-            zoom: 16,
+            zoom: 15,
             transitionInterpolator: new FlyToInterpolator({speed: 1.2}),
             transitionDuration: 'auto'
         });
@@ -73,12 +73,13 @@ class Map extends React.Component {
                 mapStyle='mapbox://styles/hturner30/ck62e8klf0xzn1ithmmtve3iq'
                 mapboxApiAccessToken='pk.eyJ1IjoiaHR1cm5lcjMwIiwiYSI6ImNrNjJhZWFkdjBiNnMzbm1tNHh1cDNlMWsifQ.0ZiYTbXUCbaJ2mxlibJjDg'
                 >
-                {(this.state.viewport.zoom >= 15)
+                {(this.state.viewport.zoom >= 12)
                     ? sensor_data.map((sensor, index) => (
                         <SensorIcon
                             key={index}
                             sensor={sensor}
                             index={index}
+                            zoomLevel={this.state.viewport.zoom}
                             onClick={this._onClickMarker}
                             callbackEditSensorLocation={this.props.callbackEditSensorLocation}
                         />
