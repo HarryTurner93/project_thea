@@ -8,19 +8,13 @@ import banner_1 from "../fake_data/fox-banner.jpg";
 import banner_2 from "../fake_data/banner-2.jpg";
 import {Nav, Navbar, NavItem} from "react-bootstrap";
 import {Link} from "react-router-dom";
-import {API, Auth, graphqlOperation} from 'aws-amplify';
+import {Auth} from 'aws-amplify';
 
 import PermMediaIcon from '@material-ui/icons/PermMedia';
 import DescriptionIcon from '@material-ui/icons/Description';
 import DoubleArrowIcon from '@material-ui/icons/DoubleArrow';
-import TextField from "@material-ui/core/TextField";
-import * as mutations from "../graphql/mutations";
 
 class LandingPage extends React.Component {
-
-    constructor(props) {
-        super(props);
-    }
 
     handleSignOut () {
         Auth.signOut()

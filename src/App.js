@@ -1,19 +1,19 @@
 import React from 'react';
 import './App.css';
-import { Navbar, Nav, NavItem, NavDropdown } from 'react-bootstrap';
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { Navbar, Nav, NavItem } from 'react-bootstrap';
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
-// Import my pages.
+// Import pages.
 import Dashboard from "./components/dashboard";
 import LandingPage from "./components/LandingPage";
 import LoginPage from "./components/login/LoginPage";
 
+// Import Components
+import NavZoneSelector from "./components/zones/navZoneSelector.js";
+
 // Amplify
-import Amplify, { Auth, API, graphqlOperation } from 'aws-amplify';
-import * as queries from './graphql/queries';
+import Amplify, { Auth } from 'aws-amplify';
 import awsconfig from './aws-exports';
-import CreateZone from "./CreateZone";
-import DeleteZone from "./DeleteZone";
 import SignUpPage from "./components/signup/SignUpPage";
 Amplify.configure(awsconfig);
 
@@ -32,10 +32,9 @@ class App extends React.Component {
     componentDidMount() {
         Auth.currentAuthenticatedUser({bypassCache: false})
             .then((user) => {
+
                 // Update the state with the new user.
                 this.setState({user: user.username});
-
-                console.log(user.username)
 
             })
             .catch(err => console.log(err));
@@ -69,27 +68,8 @@ class AuthorisedArea extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            zones: [],
-            currentZone: null
+            zone: null
         };
-
-        this.createZoneRef = React.createRef();
-        this.deleteZoneRef = React.createRef();
-    }
-
-    // This is responsible for pulling user data.
-    componentDidMount() {
-        this.updateUserProfile()
-    }
-
-    updateUserProfile () {
-        API.graphql(graphqlOperation(queries.getUser, {id: this.props.user}))
-            .then((result) => {
-                console.log(result.data);
-                this.setState({zones: result.data.getUser.zones.items});
-                this.setState({currentZone: this.state.zones[0]})
-            })
-            .catch((result) => console.log(result));
     }
 
     handleSignOut () {
@@ -100,66 +80,39 @@ class AuthorisedArea extends React.Component {
             .catch(err => console.log(err));
     }
 
-    handleCreateZone () {
-        this.createZoneRef.current.setState({open: true})
-    }
-
-    handleDeleteZone () {
-        this.deleteZoneRef.current.setState({open: true})
-    }
-
-    handleChangeZone (zone) {
-        this.setState({currentZone: zone})
-    }
+    // Simple state update handlers.
+    handleChangeZone (zone) { this.setState({zone: zone}) }
 
     render() {
 
-        // Try and get the current zone name if it's available.
-        let currentZoneName = "Zone";
-        if (this.state.currentZone) {
-            currentZoneName = this.state.currentZone.name;
-        }
+        // Destructure props.
+        let { user } = this.props;
 
         return (
             <Router>
-                <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
-                    <Navbar.Brand>Thea <b>Portal</b></Navbar.Brand>
-                    <Navbar.Collapse>
-                        <Nav className="mr-auto">
+                <Navbar bg="dark" variant="dark">
 
-                        </Nav>
-                        <Nav>
-                            <NavDropdown title={currentZoneName}>
-                                {this.state.zones.map((zone, key) =>
-                                    <NavDropdown.Item
-                                        key={zone.id}
-                                        active={(zone.name === currentZoneName)}
-                                        onClick={() => {this.handleChangeZone(zone)}}
-                                    >
-                                        {zone.name}
-                                    </NavDropdown.Item>)
-                                }
-                                <NavDropdown.Divider />
-                                <NavDropdown.Item onClick={this.handleCreateZone.bind(this)}>Create New Zone</NavDropdown.Item>
-                                {this.state.currentZone
-                                    ?<NavDropdown.Item onClick={this.handleDeleteZone.bind(this)}>Delete Zone</NavDropdown.Item>
-                                    :null}
-                                <CreateZone ref={this.createZoneRef} user={this.props.user} updateUserProfile={this.updateUserProfile.bind(this)}/>
-                                {this.state.currentZone
-                                    ?<DeleteZone ref={this.deleteZoneRef} zone={this.state.currentZone} updateUserProfile={this.updateUserProfile.bind(this)}/>
-                                    :null}
-                            </NavDropdown>
+                    <Navbar.Brand>
+                        Thea <b>Portal</b>
+                    </Navbar.Brand>
+
+                    <Navbar.Collapse>
+                        <Nav className="ml-auto">
+                            <NavZoneSelector user={user} handleAppChangeZone={this.handleChangeZone.bind(this)}/>
                             <NavItem>
                                 <Nav.Link onClick={this.handleSignOut}>Sign Out</Nav.Link>
                             </NavItem>
                         </Nav>
                     </Navbar.Collapse>
+
                 </Navbar>
+
                 <Switch>
                     <Route path="/portal">
                         <Dashboard />
                     </Route>
                 </Switch>
+
             </Router>
         );
 
