@@ -33,6 +33,7 @@ class SignUpPage extends React.Component {
                 </div>
                 <div>
                     <h1 style={{paddingLeft:'100px', paddingTop:'100px'}}>Register your Interest.</h1>
+                    <h4 style={{paddingLeft:'100px', paddingTop: '20px'}}>Sign up below to create an account with us.</h4>
                     <div style={{paddingLeft:'100px', paddingTop:'25px', width: '60%'}}>
                         <SignUpPanel/>
                     </div>

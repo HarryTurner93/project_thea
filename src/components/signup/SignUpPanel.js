@@ -117,7 +117,7 @@ class SignUpPanel extends React.Component {
                 <div style={{display: "flex", flexDirection: "row", paddingBottom: "10px", justifyContent: "space-around"}}>
                     <TextField
                       id="filled-email"
-                      label="Username"
+                      label="Enter your email"
                       fullWidth={true}
                       value={this.state.username}
                       onChange={this.handleUsernameChange.bind(this)}
@@ -128,7 +128,7 @@ class SignUpPanel extends React.Component {
                 <div style={{display: "flex", flexDirection: "row", paddingBottom: "10px", justifyContent: "space-around"}}>
                     <TextField
                       id="filled-password"
-                      label="Password"
+                      label="Create a password"
                       fullWidth={true}
                       value={this.state.password}
                       onChange={this.handlePasswordChange.bind(this)}
@@ -140,7 +140,7 @@ class SignUpPanel extends React.Component {
                     {feedback}
                 </div>
                 <div style={{display: "flex", flexDirection: "row"}}>
-                    <Button variant="outlined" onClick={this.handleSubmit.bind(this)}>Register Interest</Button>
+                    <Button variant="outlined" onClick={this.handleSubmit.bind(this)}>Create my Account</Button>
                 </div>
                 <FormLabel style={{paddingTop: '60px', fontSize: '16x'}}><b>Privacy</b></FormLabel>
                 <FormLabel style={{paddingTop: '10px', fontSize: '16x'}}>We take privacy very seriously.
