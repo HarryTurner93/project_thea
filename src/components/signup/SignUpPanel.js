@@ -4,7 +4,6 @@ import TextField from "@material-ui/core/TextField";
 import FormLabel from '@material-ui/core/FormLabel';
 import Button from "@material-ui/core/Button";
 import {API, Auth, graphqlOperation} from 'aws-amplify';
-import { Redirect } from "react-router-dom";
 import * as mutations from "../../graphql/mutations";
 
 class SignUpPanel extends React.Component {
@@ -146,7 +145,7 @@ class SignUpPanel extends React.Component {
                 <FormLabel style={{paddingTop: '10px', fontSize: '16x'}}>We take privacy very seriously.
                     We're excited that you're interested in using our platform and will never breach that trust by sharing your email
                     with third parties.</FormLabel>
-                <FormLabel style={{paddingTop: '10px', fontSize: '16x'}}>For more, see our <a href="">Privacy Policy</a></FormLabel>
+                <FormLabel style={{paddingTop: '10px', fontSize: '16x'}}>For more, see our <a href="/">Privacy Policy</a></FormLabel>
             </div>
         );
 
@@ -181,17 +180,17 @@ class SignUpPanel extends React.Component {
             </div>
         );
 
-        let confirmed2 = (
-            <div style={{display: "flex", flexDirection: "column"}}>
-                <FormLabel style={{paddingBottom: '20px', fontSize: '24px'}}>Nice. You're all ready to go.</FormLabel>
-                <div style={{paddingBottom: "10px"}}>
-                    {feedback}
-                </div>
-                <div style={{display: "flex", flexDirection: "row"}}>
-                    <Button variant="outlined" href="/portal">Go to the Portal</Button>
-                </div>
-            </div>
-        );
+        //let confirmed2 = (
+        //    <div style={{display: "flex", flexDirection: "column"}}>
+        //        <FormLabel style={{paddingBottom: '20px', fontSize: '24px'}}>Nice. You're all ready to go.</FormLabel>
+        //        <div style={{paddingBottom: "10px"}}>
+        //            {feedback}
+        //        </div>
+        //        <div style={{display: "flex", flexDirection: "row"}}>
+        //            <Button variant="outlined" href="/portal">Go to the Portal</Button>
+        //        </div>
+        //    </div>
+        //);
 
         let content = signup;
         if (this.state.status === 'unconfirmed') {

@@ -3,7 +3,6 @@ import MuiAlert from "@material-ui/lab/Alert";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { Auth } from 'aws-amplify';
-import { Redirect } from "react-router-dom";
 
 class BuildPanel extends React.Component {
 

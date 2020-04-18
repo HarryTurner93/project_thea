@@ -28,17 +28,17 @@ class LandingPage extends React.Component {
 
         // Determine whether the log in button should say "log in" or "Portal" depending on whether the user is logged
         // in already.
-        let login_button = <Nav><NavItem><Nav.Link as={Link} to="/login" >Login to the Portal</Nav.Link></NavItem></Nav>
-        if (this.props.user !== null) {
-            login_button = <Nav>
-                <NavItem>
-                    <Nav.Link as={Link} to="/portal" >Go to the Portal</Nav.Link>
-                </NavItem>
-                <NavItem>
-                    <Nav.Link onClick={this.handleSignOut}>Sign Out</Nav.Link>
-                </NavItem>
-            </Nav>
-        }
+        //let login_button = <Nav><NavItem><Nav.Link as={Link} to="/login" >Login to the Portal</Nav.Link></NavItem></Nav>
+        //if (this.props.user !== null) {
+        //    login_button = <Nav>
+        //        <NavItem>
+        //            <Nav.Link as={Link} to="/portal" >Go to the Portal</Nav.Link>
+        //        </NavItem>
+        //        <NavItem>
+        //            <Nav.Link onClick={this.handleSignOut}>Sign Out</Nav.Link>
+        //        </NavItem>
+        //    </Nav>
+        //}
 
         return (
             <div style={{display: 'flex', width: '70%', margin: 'auto', flexDirection: 'column'}}>

@@ -4,7 +4,6 @@ import {TabBrowser} from "./tabBrowser";
 import {API, graphqlOperation} from "aws-amplify";
 import * as queries from "../graphql/queries";
 import * as mutations from "../graphql/mutations";
-import {sensor_data} from "../fake_data/fake_data";
 
 class Dashboard extends React.Component {
 
@@ -165,6 +164,11 @@ class Dashboard extends React.Component {
     // #########
 
     relocateToZone() {
+
+        // If no sensors, return.
+        if ( this.state.sensors.length === 0) {
+            return
+        }
 
         // Create counts.
         let latitudes = 0

@@ -97,7 +97,7 @@ class NavZoneSelector extends React.Component {
         this.state = {
             zoneState: {
                 availableZones: [],
-                currentZone: 'Zone'
+                currentZone: {name: 'Zone'}
             }
         };
 
@@ -126,15 +126,19 @@ class NavZoneSelector extends React.Component {
     }
 
     // Pull all zones from the backend for the given user. Update the state.
-    APICALL_getUserZones () {
+    APICALL_getUserZones (goToZone) {
         API.graphql(graphqlOperation(queries.getUser, {id: this.props.user}))
             .then((result) => {
 
                 // Pulled zones.
                 let availableZones = result.data.getUser.zones.items
 
-                // Update with available zones and arbitrarily set the current zone to the first one.
                 let zoneState = {availableZones: availableZones, currentZone: availableZones[0]}
+
+                if ( goToZone ) {
+                    zoneState.currentZone = availableZones.filter(zone => zone.name === goToZone)[0]
+                }
+
                 this.setState({zoneState: zoneState});
 
                 // Call the parent (AuthorisedApp) to tell it the new zone.
@@ -151,7 +155,7 @@ class NavZoneSelector extends React.Component {
             .then((result) => {
 
                 // If the put was successful, then update state to the added zone.
-                this.APICALL_getUserZones();
+                this.APICALL_getUserZones(newZone);
             })
             .catch((result) => {
 
@@ -182,7 +186,7 @@ class NavZoneSelector extends React.Component {
         let { zoneState } = this.state;
 
         return (
-            <NavDropdown title={zoneState.currentZone.name}>
+            <NavDropdown id='NavZoneSelector' title={zoneState.currentZone.name}>
                 {zoneState.availableZones.map((zone, key) =>
                     <NavDropdown.Item
                         key={zone.id}
@@ -195,10 +199,10 @@ class NavZoneSelector extends React.Component {
                 <NavDropdown.Divider />
                 <NavDropdown.Item onClick={this.handleCreateZone.bind(this)}>Create New Zone</NavDropdown.Item>
                 <CreateZone ref={this.createZoneRef} handleCreateZone={this.APICALL_putUserZones.bind(this)}/>
-                {zoneState.currentZone !== 'Zone'
+                {zoneState.currentZone.name !== 'Zone'
                     ?<NavDropdown.Item onClick={this.handleDeleteZone.bind(this)}>Delete Zone</NavDropdown.Item>
                     :null}
-                {zoneState.currentZone !== 'Zone'
+                {zoneState.currentZone.name !== 'Zone'
                     ?<DeleteZone ref={this.deleteZoneRef} zone={zoneState.currentZone} handleDeleteZone={this.APICALL_deleteUserZones.bind(this)}/>
                     :null}
             </NavDropdown>

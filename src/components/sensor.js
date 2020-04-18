@@ -1,10 +1,8 @@
 import React  from "react";
 import {Marker} from "react-map-gl";
-import { sensor_data, detection_data } from "../fake_data/fake_data";
 import Tooltip from '@material-ui/core/Tooltip';
 import {DeleteSensorButton} from "./buttons";
 import CloseIcon from "@material-ui/icons/Close";
-import CameraCard from "./cameraCard";
 import NoDataCard from "./noDataCard";
 import Pin from "./map/Pin"
 
@@ -92,9 +90,6 @@ class InfoCard extends React.Component {
 class DataCard extends React.Component {
 
     render() {
-
-        // Deconstruct props.
-        const { sensor } = this.props;
 
         // Decide which card to show based on the detection data type.
         let card = <NoDataCard/>;
