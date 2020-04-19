@@ -93,12 +93,12 @@ class Map extends React.Component {
         this.setState({viewport: {...this.state.viewport, ...viewport}
     });
 
-    _goToViewport = ({longitude, latitude}) => {
+    _goToViewport = ({longitude, latitude, speed}) => {
         this._onViewportChange({
             longitude,
             latitude,
             zoom: 14,
-            transitionInterpolator: new FlyToInterpolator({speed: 1.2}),
+            transitionInterpolator: new FlyToInterpolator({speed: speed}),
             transitionDuration: 'auto'
         });
     };

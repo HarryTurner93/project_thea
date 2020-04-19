@@ -157,7 +157,7 @@ class Dashboard extends React.Component {
     }
 
     // Called from ?
-    handleLocateSensor(longitude, latitude) { this.mapRef.current._goToViewport({longitude, latitude}) }
+    handleLocateSensor(longitude, latitude, speed) { this.mapRef.current._goToViewport({longitude, latitude, speed}) }
 
 
     // Functions
@@ -186,7 +186,7 @@ class Dashboard extends React.Component {
         longitudes /= this.state.sensors.length;
 
         // Jump to position.
-        this.handleLocateSensor(longitudes, latitudes)
+        this.handleLocateSensor(longitudes, latitudes, 2)
     }
 
 
