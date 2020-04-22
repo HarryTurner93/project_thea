@@ -70,8 +70,8 @@ class Map extends React.Component {
             viewport: {
                 width: "100%",
                 height: "100vh",
-                latitude: 51.5084,
-                longitude: -2.5927,
+                latitude: null,
+                longitude: null,
                 zoom: 14,
             },
             tempSensor: null
@@ -151,45 +151,53 @@ class Map extends React.Component {
         // Destructure state.
         let { viewport } = this.state;
 
-        return (
-            <ReactMapGL
-                {...viewport}
-                onViewportChange={(viewport) => this.setState({viewport})}
-                mapStyle='mapbox://styles/hturner30/ck62e8klf0xzn1ithmmtve3iq'
-                mapboxApiAccessToken='pk.eyJ1IjoiaHR1cm5lcjMwIiwiYSI6ImNrNjJhZWFkdjBiNnMzbm1tNHh1cDNlMWsifQ.0ZiYTbXUCbaJ2mxlibJjDg'
-                getCursor={() => {'pointer'}}
-                onClick={this.handleClick.bind(this)}
+        if ( this.state.viewport.latitude === null ) {
+            return null
+
+        } else {
+
+            return (
+                <ReactMapGL
+                    {...viewport}
+                    onViewportChange={(viewport) => this.setState({viewport})}
+                    mapStyle='mapbox://styles/hturner30/ck62e8klf0xzn1ithmmtve3iq'
+                    mapboxApiAccessToken='pk.eyJ1IjoiaHR1cm5lcjMwIiwiYSI6ImNrNjJhZWFkdjBiNnMzbm1tNHh1cDNlMWsifQ.0ZiYTbXUCbaJ2mxlibJjDg'
+                    getCursor={() => {
+                        'pointer'
+                    }}
+                    onClick={this.handleClick.bind(this)}
                 >
-                {(viewport.zoom >= 12)
-                    ? sensorProps.allSensors.map((sensor, index) => (
-                        <SensorIcon
-                            key={index}
-                            sensor={sensor}
-                            index={index}
+                    {(viewport.zoom >= 12)
+                        ? sensorProps.allSensors.map((sensor, index) => (
+                            <SensorIcon
+                                key={index}
+                                sensor={sensor}
+                                index={index}
+                                zoomLevel={viewport.zoom}
+                                handleClick={this._onClickMarker}
+                                callbackEditSensorLocation={sensorProps.handleMoveSensor}
+                            />
+                        ))
+                        : null
+                    }
+                    {(this.state.tempSensor)
+                        ? <SensorIcon
+                            key='tempSensor'
+                            sensor={this.state.tempSensor}
+                            index={sensorProps.allSensors.length}
                             zoomLevel={viewport.zoom}
-                            handleClick={this._onClickMarker}
                             callbackEditSensorLocation={sensorProps.handleMoveSensor}
                         />
-                    ))
-                    : null
-                }
-                {(this.state.tempSensor)
-                ? <SensorIcon
-                    key='tempSensor'
-                    sensor={this.state.tempSensor}
-                    index={sensorProps.allSensors.length}
-                    zoomLevel={viewport.zoom}
-                    callbackEditSensorLocation={sensorProps.handleMoveSensor}
-                />
-                : null}
-                {this._renderPopup()}
-                <CreateSensor
-                    handleCancelCreateSensor={this.handleCancelCreateSensor.bind(this)}
-                    handleCreateSensor={sensorProps.handleCreateSensor}
-                    ref={this.createSensorRef}
-                />
-            </ReactMapGL>
+                        : null}
+                    {this._renderPopup()}
+                    <CreateSensor
+                        handleCancelCreateSensor={this.handleCancelCreateSensor.bind(this)}
+                        handleCreateSensor={sensorProps.handleCreateSensor}
+                        ref={this.createSensorRef}
+                    />
+                </ReactMapGL>
             );
+        }
         }
     }
 
