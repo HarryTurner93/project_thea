@@ -12,7 +12,7 @@ import LoginPage from "./components/login/LoginPage";
 import NavZoneSelector from "./components/zones/navZoneSelector.js";
 
 // Amplify
-import Amplify, { Auth } from 'aws-amplify';
+import Amplify, { Auth, Storage } from 'aws-amplify';
 import awsconfig from './aws-exports';
 import SignUpPage from "./components/signup/SignUpPage";
 Amplify.configure(awsconfig);

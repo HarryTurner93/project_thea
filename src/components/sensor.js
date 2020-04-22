@@ -3,8 +3,8 @@ import {Marker} from "react-map-gl";
 import Tooltip from '@material-ui/core/Tooltip';
 import {DeleteSensorButton} from "./buttons";
 import CloseIcon from "@material-ui/icons/Close";
-import NoDataCard from "./noDataCard";
 import Pin from "./map/Pin"
+import uuid from 'react-uuid'
 
 
 import IconButton from "@material-ui/core/IconButton";
@@ -13,6 +13,11 @@ import Button from '@material-ui/core/Button';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
+
+// Amplify
+import {API, graphqlOperation, Storage} from 'aws-amplify';
+import * as mutations from "../graphql/mutations";
+import * as queries from "../graphql/queries";
 
 class SensorIcon extends React.Component {
 
@@ -89,13 +94,101 @@ class InfoCard extends React.Component {
 // The card below the information, with summary of data.
 class DataCard extends React.Component {
 
+    constructor() {
+        super();
+        this.state = {
+            images: []
+        }
+    }
+
+    componentDidMount() {
+        this.APICALL_getSensorImages()
+    }
+
+    async fetch_urls(images) {
+
+        let presignedURLs = []
+
+        for (var i = 0; i < images.length; i++) {
+            let psu = await Storage.get(images[i].url)
+            presignedURLs.push(psu)
+        }
+
+        return presignedURLs
+    }
+
+    sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    // API Calls
+    // #########
+
+    // Pull all zones from the backend for the given zone. Update the state.
+    APICALL_getSensorImages () {
+        API.graphql(graphqlOperation(queries.getSensor, {id: this.props.sensor.id}))
+            .then((result) => {
+
+                let images = result.data.getSensor.images.items
+
+                this.fetch_urls(images)
+                    .then((presignedURLs) => {
+                        this.setState({images: presignedURLs})
+                        this.sleep(100)
+                        this.forceUpdate()
+                    })
+
+
+            })
+            .catch((result) => console.log(result));
+    }
+
+    // Push new zone to the backend for the given user. Update the state.
+    APICALL_putSensorImages (url) {
+        const payload = { url: url, classes: {}, imageSensorId: this.props.sensor.id };
+        API.graphql(graphqlOperation(mutations.createImage, {input: payload}))
+            .then((result) => {
+
+                // If the put was successful, then update state to the added zone.
+                this.APICALL_getSensorImages();
+            })
+            .catch((result) => {
+
+            });
+    }
+
+    handleUpload(e) {
+
+        let file = e.target.files[0]
+        let id = uuid()
+
+        Storage.put(id, file, {contentType: file.type})
+            .then((result) => {
+
+                // If this returned, then the image was uploaded successfully. Now update the database with the image key.
+                this.APICALL_putSensorImages(result.key)
+
+            })
+            .catch(error => console.log(error));
+    }
+
     render() {
 
-        // Decide which card to show based on the detection data type.
-        let card = <NoDataCard/>;
-
-        // Simply render the appropriate card component.
-        return ( card );
+        return (
+            <div style={{padding: "20px", paddingTop: "0px"}}>
+                <div style={{padding: "20px", backgroundColor:"#D1D1C6", display: "flex", flexDirection: "column", alignItems: "flex-start"}}>
+                    <div style={{display: 'flex', width: '100%', justifyContent: 'space-between'}}>
+                        <div><h4>Data</h4></div>
+                        <Button variant="outlined" component="label">Upload Images<input onChange={this.handleUpload.bind(this)} type='file' style={{display: 'none'}}/></Button>
+                    </div>
+                    <div style={{display: 'flex', flexWrap: 'wrap'}}>
+                        {this.state.images.map(function(item, i) {
+                            return <img key={item} style={{width: '150px', padding: '10px'}} src={item}/>
+                        })}
+                    </div>
+                </div>
+            </div>
+        );
     }
 }
 

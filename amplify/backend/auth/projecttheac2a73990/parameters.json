@@ -1,6 +1,6 @@
 {
     "identityPoolName": "projecttheac2a73990_identitypool_c2a73990",
-    "allowUnauthenticatedIdentities": false,
+    "allowUnauthenticatedIdentities": true,
     "resourceNameTruncated": "projecc2a73990",
     "userPoolName": "projecttheac2a73990_userpool_c2a73990",
     "autoVerifiedAttributes": [
