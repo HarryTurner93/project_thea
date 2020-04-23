@@ -70,9 +70,9 @@ class Map extends React.Component {
             viewport: {
                 width: "100%",
                 height: "100vh",
-                latitude: null,
-                longitude: null,
-                zoom: 14,
+                latitude: 54.2361,
+                longitude: -4.5481,
+                zoom: 5,
             },
             tempSensor: null
         };
@@ -93,11 +93,11 @@ class Map extends React.Component {
         this.setState({viewport: {...this.state.viewport, ...viewport}
     });
 
-    _goToViewport = ({longitude, latitude, speed}) => {
+    _goToViewport = ({longitude, latitude, speed, zoom}) => {
         this._onViewportChange({
             longitude,
             latitude,
-            zoom: 14,
+            zoom: zoom,
             transitionInterpolator: new FlyToInterpolator({speed: speed}),
             transitionDuration: 'auto'
         });
@@ -165,7 +165,7 @@ class Map extends React.Component {
                     getCursor={() => {
                         'pointer'
                     }}
-                    onClick={this.handleClick.bind(this)}
+                    onClick={( this.props.freezeMap ) ? null : this.handleClick.bind(this)}
                 >
                     {(viewport.zoom >= 12)
                         ? sensorProps.allSensors.map((sensor, index) => (

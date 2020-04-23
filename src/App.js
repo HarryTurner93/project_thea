@@ -1,10 +1,11 @@
 import React from 'react';
 import './App.css';
 import { Navbar, Nav, NavItem } from 'react-bootstrap';
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import {BrowserRouter as Router, Switch, Route, Link} from "react-router-dom";
 
 // Import pages.
 import Dashboard from "./components/dashboard";
+import BrowserPage from "./components/browser/BrowserPage.js"
 import LandingPage from "./components/LandingPage";
 import LoginPage from "./components/login/LoginPage";
 
@@ -70,6 +71,9 @@ class AuthorisedArea extends React.Component {
         this.state = {
             zone: null
         };
+
+        // Create References.
+        this.dashRef = React.createRef();
     }
 
     handleSignOut () {
@@ -100,8 +104,16 @@ class AuthorisedArea extends React.Component {
                     </Navbar.Brand>
 
                     <Navbar.Collapse>
+                        <Nav>
+                            <NavItem href="/portal/map">
+                                <Nav.Link as={Link} to="/portal/map" >Map</Nav.Link>
+                            </NavItem>
+                            <NavItem href="/portal/browser">
+                                <Nav.Link as={Link} to="/portal/browser" >Browser</Nav.Link>
+                            </NavItem>
+                        </Nav>
                         <Nav className="ml-auto">
-                            <NavZoneSelector user={user} handleAppChangeZone={this.handleChangeZone.bind(this)}/>
+                            <NavZoneSelector user={user} handleAppChangeZone={this.handleChangeZone.bind(this)} dashRef={this.dashRef}/>
                             <NavItem>
                                 <Nav.Link onClick={this.handleSignOut}>Sign Out</Nav.Link>
                             </NavItem>
@@ -111,8 +123,11 @@ class AuthorisedArea extends React.Component {
                 </Navbar>
 
                 <Switch>
-                    <Route path="/portal">
-                        <Dashboard zone={zone}/>
+                    <Route path="/portal/map">
+                        <Dashboard ref={this.dashRef} zone={zone}/>
+                    </Route>
+                    <Route path="/portal/browser">
+                        <BrowserPage zone={zone}/>
                     </Route>
                 </Switch>
 

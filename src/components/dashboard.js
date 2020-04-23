@@ -13,18 +13,32 @@ class Dashboard extends React.Component {
             tabs: [],
             current_tab_key: "traps",
             sensors: [],
-            cachedZoneID: null
+            cachedZoneID: null,
+            freezeMap: true
         };
 
         // Create References.
         this.mapRef = React.createRef();
     }
 
+    resetDashboard() {
+
+        // Reset sensors.
+        this.setState({sensors: []})
+        this.setState({freezeMap: true})
+
+    }
+
     // API Calls
     // #########
 
-    // Pull all zones from the backend for the given zone. Update the state.
+    // Pull all sensors from the backend for the given zone. Update the state.
     APICALL_getZoneSensors (fly_to_zone) {
+
+        // This function is only called if another zone exists, so unfreeze the map as it's not in default mode anymore.
+        this.setState({freezeMap: false})
+
+
         API.graphql(graphqlOperation(queries.getZone, {id: this.props.zone.id}))
             .then((result) => {
 
@@ -40,6 +54,8 @@ class Dashboard extends React.Component {
                         longitude: parseFloat(sensor.longitude)
                     }
                 ));
+
+                console.log(mappedSensors)
 
                 // Update with sensors
                 this.setState({sensors: mappedSensors}, () => {
@@ -157,7 +173,11 @@ class Dashboard extends React.Component {
     }
 
     // Called from ?
-    handleLocateSensor(longitude, latitude, speed) { this.mapRef.current._goToViewport({longitude, latitude, speed}) }
+    handleLocateSensor(longitude, latitude, speed, zoom) {
+        if (this.mapRef.current !== null) {
+            this.mapRef.current._goToViewport({longitude, latitude, speed, zoom})
+        }
+    }
 
 
     // Functions
@@ -186,7 +206,7 @@ class Dashboard extends React.Component {
         longitudes /= this.state.sensors.length;
 
         // Jump to position.
-        this.handleLocateSensor(longitudes, latitudes, 2)
+        this.handleLocateSensor(longitudes, latitudes, 2, 13)
     }
 
 
@@ -198,6 +218,7 @@ class Dashboard extends React.Component {
         // Destructure props.
         let { zone } = this.props;
 
+
         // If the zone has changed, pull latest.
         if ( zone ) {
             if ( zone.id !== this.state.cachedZoneID) {
@@ -205,6 +226,8 @@ class Dashboard extends React.Component {
                     this.APICALL_getZoneSensors(true)
                 })
             }
+        } else {
+            this.handleLocateSensor( -4.5481, 54.2361,2, 5)
         }
 
         // Destructure state.
@@ -228,6 +251,7 @@ class Dashboard extends React.Component {
                                 }
                             }
                             ref={this.mapRef}
+                            freezeMap={this.state.freezeMap}
                         />
                     </div>
                     <div style={{flex: 1}}>

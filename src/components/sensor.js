@@ -252,7 +252,7 @@ class SensorSummaryCard extends React.Component {
                     </CardContent>
                     <CardActions>
                         <Button size="small" onClick={() => add_tab_cb(sensor.name)}>Details</Button>
-                        <Button size="small" onClick={() => callbackFindInMap(sensor.longitude, sensor.latitude, 1.2)}>Find in Map</Button>
+                        <Button size="small" onClick={() => callbackFindInMap(sensor.longitude, sensor.latitude, 1.2, 13)}>Find in Map</Button>
                     </CardActions>
                 </Card>
             </div>

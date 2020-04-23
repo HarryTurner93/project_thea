@@ -130,19 +130,31 @@ class NavZoneSelector extends React.Component {
         API.graphql(graphqlOperation(queries.getUser, {id: this.props.user}))
             .then((result) => {
 
+                console.log("Just got zones.")
                 // Pulled zones.
                 let availableZones = result.data.getUser.zones.items
 
-                let zoneState = {availableZones: availableZones, currentZone: availableZones[0]}
+                // If zones, then update.
+                if ( availableZones.length > 0 ) {
 
-                if ( goToZone ) {
-                    zoneState.currentZone = availableZones.filter(zone => zone.name === goToZone)[0]
+                    let zoneState = {availableZones: availableZones, currentZone: availableZones[0]}
+
+                    if ( goToZone ) {
+                        zoneState.currentZone = availableZones.filter(zone => zone.name === goToZone)[0]
+                    }
+
+                    this.setState({zoneState: zoneState});
+
+                    // Call the parent (AuthorisedApp) to tell it the new zone.
+                    this.props.handleAppChangeZone(this.state.zoneState.currentZone)
+
+                } else {
+
+                    // Call the parent (AuthorisedApp) to tell it the null zone.
+                    this.setState({zoneState: {availableZones: [], currentZone: {name: 'Zone'}}});
+                    this.props.dashRef.current.resetDashboard()
+                    this.props.handleAppChangeZone(null)
                 }
-
-                this.setState({zoneState: zoneState});
-
-                // Call the parent (AuthorisedApp) to tell it the new zone.
-                this.props.handleAppChangeZone(this.state.zoneState.currentZone)
 
             })
             .catch((result) => console.log(result));
@@ -186,7 +198,7 @@ class NavZoneSelector extends React.Component {
         let { zoneState } = this.state;
 
         return (
-            <NavDropdown id='NavZoneSelector' title={zoneState.currentZone.name}>
+            <NavDropdown id='NavZoneSelector' title={(zoneState.currentZone.name) ? zoneState.currentZone.name : null}>
                 {zoneState.availableZones.map((zone, key) =>
                     <NavDropdown.Item
                         key={zone.id}
