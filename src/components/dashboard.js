@@ -225,7 +225,7 @@ class Dashboard extends React.Component {
         if ( zone ) {
             if ( zone.id !== this.state.cachedZoneID) {
                 this.setState({cachedZoneID: zone.id}, () => {
-                    //this.resetTabs()
+                    this.resetTabs()
                     this.APICALL_getZoneSensors(true)
                 })
             }
