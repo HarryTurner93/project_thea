@@ -43,13 +43,17 @@ class App extends React.Component {
             .catch(err => console.log(err));
     }
 
+    badFunc() {
+
+    }
+
     render() {
 
         return (
             <Router>
                 <Switch>
                     <Route exact path="/">
-                        <LandingPage user={this.state.user}/>
+                        <LandingPage user={this.state.user} badComp={this.badFunc()}/>
                     </Route>
                     <Route path="/login">
                         <LoginPage />
@@ -126,7 +130,7 @@ class AuthorisedArea extends React.Component {
 
                 <Switch>
                     <Route path="/portal/map">
-                        <DashboardPage ref={this.dashRef} zone={zone}/>
+                        <DashboardPage ref={this.dashRef} zone={zone} />
                     </Route>
                     <Route path="/portal/browser">
                         <BrowserPage zone={zone}/>
