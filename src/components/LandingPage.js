@@ -48,8 +48,6 @@ class LandingPage extends React.Component {
         //    </Nav>
         //}
 
-        this.props.badComp()
-
         return (
             <div style={{display: 'flex', width: '70%', margin: 'auto', flexDirection: 'column'}}>
                 <div>
