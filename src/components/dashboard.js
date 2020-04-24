@@ -21,6 +21,10 @@ class Dashboard extends React.Component {
         this.mapRef = React.createRef();
     }
 
+    resetTabs() {
+        this.setState({tabs: [], current_tab_key: 'traps'})
+    }
+
     resetDashboard() {
 
         // Reset sensors.
@@ -54,8 +58,6 @@ class Dashboard extends React.Component {
                         longitude: parseFloat(sensor.longitude)
                     }
                 ));
-
-                console.log(mappedSensors)
 
                 // Update with sensors
                 this.setState({sensors: mappedSensors}, () => {
@@ -223,6 +225,7 @@ class Dashboard extends React.Component {
         if ( zone ) {
             if ( zone.id !== this.state.cachedZoneID) {
                 this.setState({cachedZoneID: zone.id}, () => {
+                    //this.resetTabs()
                     this.APICALL_getZoneSensors(true)
                 })
             }
