@@ -5,7 +5,7 @@ import { Navbar, Nav, NavItem } from 'react-bootstrap';
 import {BrowserRouter as Router, Switch, Route, Link} from "react-router-dom";
 
 // Import pages.
-import Dashboard from "./components/dashboard";
+import DashboardPage from "./components/DashboardPage";
 import BrowserPage from "./components/browser/BrowserPage.js"
 import LandingPage from "./components/LandingPage";
 import LoginPage from "./components/login/LoginPage";
@@ -126,7 +126,7 @@ class AuthorisedArea extends React.Component {
 
                 <Switch>
                     <Route path="/portal/map">
-                        <Dashboard ref={this.dashRef} zone={zone}/>
+                        <DashboardPage ref={this.dashRef} zone={zone}/>
                     </Route>
                     <Route path="/portal/browser">
                         <BrowserPage zone={zone}/>

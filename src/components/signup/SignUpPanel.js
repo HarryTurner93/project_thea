@@ -5,6 +5,7 @@ import FormLabel from '@material-ui/core/FormLabel';
 import Button from "@material-ui/core/Button";
 import {API, Auth, graphqlOperation} from 'aws-amplify';
 import * as mutations from "../../graphql/mutations";
+import * as Sentry from "@sentry/browser";
 
 class SignUpPanel extends React.Component {
 
@@ -89,6 +90,13 @@ class SignUpPanel extends React.Component {
             .catch((err) => {
                 this.setState({errorCode: err.code})
             });
+    }
+
+    componentDidCatch(error, errorInfo) {
+        Sentry.withScope((scope) => {
+            scope.setExtras(errorInfo);
+            Sentry.captureException(error);
+        });
     }
 
     render() {

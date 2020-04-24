@@ -3,6 +3,7 @@ import MuiAlert from "@material-ui/lab/Alert";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { Auth } from 'aws-amplify';
+import * as Sentry from "@sentry/browser";
 
 class BuildPanel extends React.Component {
 
@@ -50,6 +51,13 @@ class BuildPanel extends React.Component {
                 }
             });
 
+    }
+
+    componentDidCatch(error, errorInfo) {
+        Sentry.withScope((scope) => {
+            scope.setExtras(errorInfo);
+            Sentry.captureException(error);
+        });
     }
 
     render() {

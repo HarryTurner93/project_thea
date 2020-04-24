@@ -13,6 +13,7 @@ import {Auth} from 'aws-amplify';
 import PermMediaIcon from '@material-ui/icons/PermMedia';
 import DescriptionIcon from '@material-ui/icons/Description';
 import DoubleArrowIcon from '@material-ui/icons/DoubleArrow';
+import * as Sentry from "@sentry/browser";
 
 class LandingPage extends React.Component {
 
@@ -22,6 +23,13 @@ class LandingPage extends React.Component {
                 window.location.replace("/");
             })
             .catch(err => console.log(err));
+    }
+
+    componentDidCatch(error, errorInfo) {
+        Sentry.withScope((scope) => {
+            scope.setExtras(errorInfo);
+            Sentry.captureException(error);
+        });
     }
 
     render() {

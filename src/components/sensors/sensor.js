@@ -1,9 +1,8 @@
 import React  from "react";
 import {Marker} from "react-map-gl";
 import Tooltip from '@material-ui/core/Tooltip';
-import {DeleteSensorButton} from "./buttons";
 import CloseIcon from "@material-ui/icons/Close";
-import Pin from "./map/Pin"
+import Pin from "../map/Pin"
 import uuid from 'react-uuid'
 
 
@@ -16,10 +15,101 @@ import Typography from '@material-ui/core/Typography';
 
 // Amplify
 import {API, graphqlOperation, Storage} from 'aws-amplify';
-import * as mutations from "../graphql/mutations";
-import * as queries from "../graphql/queries";
+import * as mutations from "../../graphql/mutations";
+import * as queries from "../../graphql/queries";
+import DeleteIcon from "@material-ui/icons/Delete";
+import Dialog from "@material-ui/core/Dialog";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogActions from "@material-ui/core/DialogActions";
+import * as Sentry from "@sentry/browser";
+
+class DeleteSensorButton extends React.Component {
+
+    componentDidCatch(error, errorInfo) {
+        Sentry.withScope((scope) => {
+            scope.setExtras(errorInfo);
+            Sentry.captureException(error);
+        });
+    }
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            open: false
+        };
+
+        // Bind all handler functions.
+        this.handleClickOpen = this.handleClickOpen.bind(this);
+        this.handleClickClose = this.handleClickClose.bind(this);
+        this.handleClickAgree = this.handleClickAgree.bind(this);
+    }
+
+    // Call back function to handle button click.
+    handleClickOpen() {
+        this.setState((state) => {
+            return {open: true}
+        })
+    }
+
+    // Call back function to handle button click.
+    handleClickClose() {
+        this.setState((state) => {
+            return {open: false}
+        })
+    }
+
+    // Call back function to handle button click.
+    handleClickAgree() {
+        this.setState((state) => {
+            return {open: false}
+        });
+        this.props.callbackRemoveSensor(this.props.sensor, this.props.tab_id);
+    }
+
+    render() {
+        return (
+            <div>
+                <Tooltip title="Delete Sensor">
+                    <IconButton onClick={this.handleClickOpen}>
+                        <DeleteIcon color='action' style={{height: '50px', width: '50px'}}/>
+                    </IconButton>
+                </Tooltip>
+                <Dialog
+                    open={this.state.open}
+                    onClose={this.handleClickClose}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                    >
+                    <DialogTitle id="alert-dialog-title">Delete Sensor?</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            Are you sure you want to delete this sensor? This action can't be undone.
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={this.handleClickClose} color="primary">
+                            Disagree
+                        </Button>
+                        <Button onClick={this.handleClickAgree} color="primary" autoFocus>
+                            Agree
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+            </div>
+        )
+    }
+}
 
 class SensorIcon extends React.Component {
+
+    componentDidCatch(error, errorInfo) {
+        Sentry.withScope((scope) => {
+            scope.setExtras(errorInfo);
+            Sentry.captureException(error);
+        });
+    }
 
     handleDragEnd = event => {
 
@@ -53,6 +143,13 @@ class SensorIcon extends React.Component {
 // The card right at the top of each sensor panel, with a title and close button.
 class TitleCard extends React.Component {
 
+    componentDidCatch(error, errorInfo) {
+        Sentry.withScope((scope) => {
+            scope.setExtras(errorInfo);
+            Sentry.captureException(error);
+        });
+    }
+
     render() {
         // Deconstruct props.
         const { sensor, remove_tab_cb, tab_id } = this.props;
@@ -72,6 +169,13 @@ class TitleCard extends React.Component {
 
 // The card just below the title with basic sensor information.
 class InfoCard extends React.Component {
+
+    componentDidCatch(error, errorInfo) {
+        Sentry.withScope((scope) => {
+            scope.setExtras(errorInfo);
+            Sentry.captureException(error);
+        });
+    }
 
     render() {
 
@@ -93,6 +197,13 @@ class InfoCard extends React.Component {
 
 // The card below the information, with summary of data.
 class DataCard extends React.Component {
+
+    componentDidCatch(error, errorInfo) {
+        Sentry.withScope((scope) => {
+            scope.setExtras(errorInfo);
+            Sentry.captureException(error);
+        });
+    }
 
     constructor() {
         super();
@@ -195,6 +306,13 @@ class DataCard extends React.Component {
 // The bit below the data in the sensor panel with options to delete and move sensors.
 class ControlCard extends React.Component {
 
+    componentDidCatch(error, errorInfo) {
+        Sentry.withScope((scope) => {
+            scope.setExtras(errorInfo);
+            Sentry.captureException(error);
+        });
+    }
+
     render() {
 
         // Deconstruct props.
@@ -219,6 +337,14 @@ class ControlCard extends React.Component {
 
 // This is the little pop up you get when clicking the icon on the map.
 class SensorBite extends React.Component {
+
+    componentDidCatch(error, errorInfo) {
+        Sentry.withScope((scope) => {
+            scope.setExtras(errorInfo);
+            Sentry.captureException(error);
+        });
+    }
+
   render() {
 
       // Deconstruct props.
@@ -237,6 +363,14 @@ class SensorBite extends React.Component {
 
 // This is the card that appears in the "Sensor Tab" that lists all sensors. Think a menu to go to your sensors directly.
 class SensorSummaryCard extends React.Component {
+
+    componentDidCatch(error, errorInfo) {
+        Sentry.withScope((scope) => {
+            scope.setExtras(errorInfo);
+            Sentry.captureException(error);
+        });
+    }
+
     render() {
 
         // Deconstruct props.

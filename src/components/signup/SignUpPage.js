@@ -3,8 +3,16 @@ import React from "react";
 import {Nav, Navbar, NavItem} from "react-bootstrap";
 import {Link} from "react-router-dom";
 import SignUpPanel from "./SignUpPanel";
+import * as Sentry from "@sentry/browser";
 
 class SignUpPage extends React.Component {
+
+    componentDidCatch(error, errorInfo) {
+        Sentry.withScope((scope) => {
+            scope.setExtras(errorInfo);
+            Sentry.captureException(error);
+        });
+    }
 
     render() {
 

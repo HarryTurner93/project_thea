@@ -8,6 +8,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
 import {API, graphqlOperation, Storage} from "aws-amplify";
 import * as queries from "../../graphql/queries";
+import * as Sentry from "@sentry/browser";
 
 class BrowserPage extends React.Component {
 
@@ -90,6 +91,13 @@ class BrowserPage extends React.Component {
         }
 
         return presignedURLs
+    }
+
+    componentDidCatch(error, errorInfo) {
+        Sentry.withScope((scope) => {
+            scope.setExtras(errorInfo);
+            Sentry.captureException(error);
+        });
     }
 
     render() {

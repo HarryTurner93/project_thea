@@ -1,12 +1,13 @@
 import React from "react";
 import ReactMapGL, {Popup, FlyToInterpolator} from "react-map-gl";
-import {SensorIcon, SensorBite} from "../sensor";
+import {SensorIcon, SensorBite} from "../sensors/sensor";
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
+import * as Sentry from "@sentry/browser";
 
 class CreateSensor extends React.Component {
 
@@ -40,6 +41,13 @@ class CreateSensor extends React.Component {
         this.setState({open: false, sensorName: ""});
         this.props.handleCancelCreateSensor();
         this.props.handleCreateSensor(this.state.latitude, this.state.longitude, this.state.sensorName);
+    }
+
+    componentDidCatch(error, errorInfo) {
+        Sentry.withScope((scope) => {
+            scope.setExtras(errorInfo);
+            Sentry.captureException(error);
+        });
     }
 
     render() {

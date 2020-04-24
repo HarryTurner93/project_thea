@@ -10,6 +10,7 @@ import TextField from "@material-ui/core/TextField";
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
 import DialogContentText from "@material-ui/core/DialogContentText";
+import * as Sentry from "@sentry/browser";
 
 class CreateZone extends React.Component {
 
@@ -190,6 +191,13 @@ class NavZoneSelector extends React.Component {
             })
             .catch((result) => {
             });
+    }
+
+    componentDidCatch(error, errorInfo) {
+        Sentry.withScope((scope) => {
+            scope.setExtras(errorInfo);
+            Sentry.captureException(error);
+        });
     }
 
     render() {

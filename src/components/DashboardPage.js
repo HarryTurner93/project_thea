@@ -1,12 +1,12 @@
 import React from "react";
 import {Map} from "./map/Map";
-import {TabBrowser} from "./tabBrowser";
+import {TabBrowser} from "./tabs/tabBrowser";
 import {API, graphqlOperation} from "aws-amplify";
 import * as queries from "../graphql/queries";
 import * as mutations from "../graphql/mutations";
 import * as Sentry from '@sentry/browser';
 
-class Dashboard extends React.Component {
+class DashboardPage extends React.Component {
 
     constructor(props) {
         super(props);
@@ -233,7 +233,7 @@ class Dashboard extends React.Component {
         if ( zone ) {
             if ( zone.id !== this.state.cachedZoneID) {
                 this.setState({cachedZoneID: zone.id}, () => {
-                    //this.resetTabs()
+                    this.resetTabs()
                     this.APICALL_getZoneSensors(true)
                 })
             }
@@ -293,4 +293,4 @@ class Dashboard extends React.Component {
 }
 
 
-export default Dashboard;
+export default DashboardPage;

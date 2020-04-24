@@ -1,9 +1,17 @@
 import React from "react";
 import Tabs from "react-bootstrap/Tabs";
 import Tab from "react-bootstrap/Tab";
-import {InfoCard, TitleCard, DataCard, ControlCard, SensorSummaryCard} from './sensor';
+import {InfoCard, TitleCard, DataCard, ControlCard, SensorSummaryCard} from '../sensors/sensor';
+import * as Sentry from "@sentry/browser";
 
 class TabBrowser extends React.Component {
+
+    componentDidCatch(error, errorInfo) {
+        Sentry.withScope((scope) => {
+            scope.setExtras(errorInfo);
+            Sentry.captureException(error);
+        });
+    }
 
     render() {
 
