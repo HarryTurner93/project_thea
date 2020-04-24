@@ -17,7 +17,7 @@ import NavZoneSelector from "./components/zones/navZoneSelector.js";
 import Amplify, { Auth, Storage } from 'aws-amplify';
 import awsconfig from './aws-exports';
 import SignUpPage from "./components/signup/SignUpPage";
-Sentry.init({dsn: "https://7e17d29823cf45b1988ac99ba35e95af@o382306.ingest.sentry.io/5210959"});
+Sentry.init({dsn: "https://7e17d29823cf45b1988ac99ba35e95af@o382306.ingest.sentry.io/5210959",});
 Amplify.configure(awsconfig);
 
 // https://read.acloud.guru/8-steps-to-building-your-own-serverless-graphql-api-using-aws-amplify-42c21770424d
