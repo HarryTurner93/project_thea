@@ -1,8 +1,5 @@
 import React from "react";
-import {API, graphqlOperation} from "aws-amplify";
-import * as queries from "../../graphql/queries";
 import {NavDropdown} from "react-bootstrap";
-import * as mutations from "../../graphql/mutations";
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -11,6 +8,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import * as Sentry from "@sentry/browser";
+import './nav.css'
 
 class CreateZone extends React.Component {
 
@@ -95,12 +93,6 @@ class NavZoneSelector extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            zoneState: {
-                availableZones: [],
-                currentZone: {name: 'Zone'}
-            }
-        };
 
         // References to two dialog pop ups, components that are currently hidden and "turned on" by a button press.
         this.createZoneRef = React.createRef();
@@ -111,88 +103,7 @@ class NavZoneSelector extends React.Component {
     handleCreateZone () { this.createZoneRef.current.setState({open: true}) }
     handleDeleteZone () { this.deleteZoneRef.current.setState({open: true}) }
 
-    // Called when user changes zone. Updates the state with the new zone.
-    handleChangeZone (zone) {
-        let zoneState = {...this.state.zoneState}
-        zoneState.currentZone = zone
-        this.setState({zoneState: zoneState})
-
-        // Call the parent (AuthorisedApp) to tell it the new zone.
-        this.props.handleAppChangeZone(zone)
-    }
-
-    // On load, pull user zones.
-    componentDidMount() {
-        this.APICALL_getUserZones()
-    }
-
-    // Pull all zones from the backend for the given user. Update the state.
-    APICALL_getUserZones (goToZone) {
-        API.graphql(graphqlOperation(queries.getUser, {id: this.props.user}))
-            .then((result) => {
-
-                console.log("Just got zones.")
-                // Pulled zones.
-                let availableZones = result.data.getUser.zones.items
-
-                // If zones, then update.
-                if ( availableZones.length > 0 ) {
-
-                    let zoneState = {availableZones: availableZones, currentZone: availableZones[0]}
-
-                    if ( goToZone ) {
-                        zoneState.currentZone = availableZones.filter(zone => zone.name === goToZone)[0]
-                    }
-
-                    this.setState({zoneState: zoneState});
-
-                    // Call the parent (AuthorisedApp) to tell it the new zone.
-                    this.props.handleAppChangeZone(this.state.zoneState.currentZone)
-
-                } else {
-
-                    // Call the parent (AuthorisedApp) to tell it the null zone.
-                    this.setState({zoneState: {availableZones: [], currentZone: {name: 'Zone'}}});
-                    this.props.dashRef.current.resetDashboard()
-                    this.props.handleAppChangeZone(null)
-                }
-
-            })
-            .catch((result) => console.log(result));
-    }
-
-    // Push new zone to the backend for the given user. Update the state.
-    APICALL_putUserZones (newZone) {
-        const payload = { name: newZone, zoneUserId: this.props.user };
-        API.graphql(graphqlOperation(mutations.createZone, {input: payload}))
-            .then((result) => {
-
-                // If the put was successful, then update state to the added zone.
-                this.APICALL_getUserZones(newZone);
-            })
-            .catch((result) => {
-
-            });
-    }
-
-    // Remove zone association with a user. Update the state.
-    // Note that for now, it doesn't actually delete, just removes association with user.
-    APICALL_deleteUserZones (zone) {
-        const payload = {
-            id: zone.id,
-            name: zone.name,
-            zoneUserId: "none"
-        };
-        API.graphql(graphqlOperation(mutations.updateZone, {input: payload}))
-            .then((result) => {
-
-                // If the delete was successful, then pull the zones again (to update the state).
-                this.APICALL_getUserZones();
-            })
-            .catch((result) => {
-            });
-    }
-
+    // Error handling and reporting.
     componentDidCatch(error, errorInfo) {
         Sentry.withScope((scope) => {
             scope.setExtras(errorInfo);
@@ -203,27 +114,29 @@ class NavZoneSelector extends React.Component {
     render() {
 
         // Destructure props and state.
-        let { zoneState } = this.state;
+        let { zoneState, handleChangeZone, handleDeleteZone, handleCreateZone } = this.props;
 
         return (
             <NavDropdown id='NavZoneSelector' title={(zoneState.currentZone.name) ? zoneState.currentZone.name : null}>
                 {zoneState.availableZones.map((zone, key) =>
                     <NavDropdown.Item
+                        id={(zone.name === zoneState.currentZone.name) ? 'dropdown' : null}
                         key={zone.id}
                         active={(zone.name === zoneState.currentZone.name)}
-                        onClick={() => {this.handleChangeZone(zone)}}
+                        onClick={() => {handleChangeZone(zone)}}
                     >
                         {zone.name}
                     </NavDropdown.Item>)
                 }
+
                 <NavDropdown.Divider />
                 <NavDropdown.Item onClick={this.handleCreateZone.bind(this)}>Create New Zone</NavDropdown.Item>
-                <CreateZone ref={this.createZoneRef} handleCreateZone={this.APICALL_putUserZones.bind(this)}/>
+                <CreateZone ref={this.createZoneRef} handleCreateZone={handleCreateZone}/>
                 {zoneState.currentZone.name !== 'Zone'
                     ?<NavDropdown.Item onClick={this.handleDeleteZone.bind(this)}>Delete Zone</NavDropdown.Item>
                     :null}
                 {zoneState.currentZone.name !== 'Zone'
-                    ?<DeleteZone ref={this.deleteZoneRef} zone={zoneState.currentZone} handleDeleteZone={this.APICALL_deleteUserZones.bind(this)}/>
+                    ?<DeleteZone ref={this.deleteZoneRef} zone={zoneState.currentZone} handleDeleteZone={handleDeleteZone}/>
                     :null}
             </NavDropdown>
         )

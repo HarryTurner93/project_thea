@@ -284,6 +284,7 @@ class DashboardPage extends React.Component {
 
                                 }
                             }
+                            setUploadFile={this.props.setUploadFile}
                         />
                     </div>
                 </div>

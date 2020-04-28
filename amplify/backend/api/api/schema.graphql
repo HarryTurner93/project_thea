@@ -19,7 +19,7 @@ type Sensor @model {
   latitude: String
   longitude: String
   zone: Zone @connection(name: "ZoneSensors")
-  images: [Image] @connection(name: "SensorImages")
+  images: [Image] @connection(name: "SensorImages", limit: 1000)
 }
 type Image @model {
   id: ID!

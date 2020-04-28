@@ -25,3 +25,9 @@ code {
   width: 200px;
   padding-bottom: 50px;
 }
+
+#NavZoneSelector{
+    color: white;
+    font-weight: bold;
+    background-color: red;
+}

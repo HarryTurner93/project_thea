@@ -14,8 +14,8 @@ class Pin extends PureComponent {
                 viewBox="0 0 24 24"
                 style={{
                     cursor: 'pointer',
-                    fill: '#69B0A8',
-                    stroke: '#508D85',
+                    fill: '#00A287',
+                    stroke: '#1F7B67',
                     strokeWidth: "4",
                     overflow: 'visible',
                     transform: `translate(${-size / 2}px,${-size-8}px)`

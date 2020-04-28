@@ -3,7 +3,6 @@ import {Marker} from "react-map-gl";
 import Tooltip from '@material-ui/core/Tooltip';
 import CloseIcon from "@material-ui/icons/Close";
 import Pin from "../map/Pin"
-import uuid from 'react-uuid'
 
 
 import IconButton from "@material-ui/core/IconButton";
@@ -12,10 +11,10 @@ import Button from '@material-ui/core/Button';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
+import UploadProgress from "./UploadProgress";
 
 // Amplify
 import {API, graphqlOperation, Storage} from 'aws-amplify';
-import * as mutations from "../../graphql/mutations";
 import * as queries from "../../graphql/queries";
 import DeleteIcon from "@material-ui/icons/Delete";
 import Dialog from "@material-ui/core/Dialog";
@@ -240,6 +239,8 @@ class DataCard extends React.Component {
         API.graphql(graphqlOperation(queries.getSensor, {id: this.props.sensor.id}))
             .then((result) => {
 
+                console.log(result)
+
                 let images = result.data.getSensor.images.items
 
                 this.fetch_urls(images)
@@ -254,50 +255,34 @@ class DataCard extends React.Component {
             .catch((result) => console.log(result));
     }
 
-    // Push new zone to the backend for the given user. Update the state.
-    APICALL_putSensorImages (url) {
-        const payload = { url: url, classes: {}, imageSensorId: this.props.sensor.id };
-        API.graphql(graphqlOperation(mutations.createImage, {input: payload}))
-            .then((result) => {
-
-                // If the put was successful, then update state to the added zone.
-                this.APICALL_getSensorImages();
-            })
-            .catch((result) => {
-
-            });
-    }
-
     handleUpload(e) {
 
-        let file = e.target.files[0]
-        let id = uuid()
+        // Tell the store to start uploading file.
+        this.props.setUploadFile(e.target.files)
 
-        Storage.put(id, file, {contentType: file.type})
-            .then((result) => {
-
-                // If this returned, then the image was uploaded successfully. Now update the database with the image key.
-                this.APICALL_putSensorImages(result.key)
-
-            })
-            .catch(error => console.log(error));
+        // Clear the current file.
+        e.target.value = ''
     }
 
     render() {
+
+        console.log(this.state.images.length)
 
         return (
             <div style={{padding: "20px", paddingTop: "0px"}}>
                 <div style={{padding: "20px", backgroundColor:"#D1D1C6", display: "flex", flexDirection: "column", alignItems: "flex-start"}}>
                     <div style={{display: 'flex', width: '100%', justifyContent: 'space-between'}}>
                         <div><h4>Data</h4></div>
-                        <Button variant="outlined" component="label">Upload Images<input onChange={this.handleUpload.bind(this)} type='file' style={{display: 'none'}}/></Button>
+                        <Button variant="outlined" component="label">Upload Images<input onChange={this.handleUpload.bind(this)} type='file' style={{display: 'none'}} multiple/></Button>
                     </div>
                     <div style={{display: 'flex', flexWrap: 'wrap'}}>
-                        {this.state.images.map(function(item, i) {
-                            return <img key={item} style={{width: '150px', padding: '10px'}} src={item}/>
+                        {this.state.images.slice(0, 3).map(function(item, i) {
+                            return <img key={i} style={{width: '150px', padding: '10px'}} src={item}/>
                         })}
+                        {this.state.images.length > 3 ? "(others not shown)" : null}
                     </div>
                 </div>
+                <UploadProgress sensor={this.props.sensor}/>
             </div>
         );
     }
