@@ -36,16 +36,35 @@ class ImageBrowser extends React.Component {
 
     render() {
 
-        let { images, handleSelectionFinish } = this.props;
+        let { images, thresholds, handleSelectionFinish, handleDoubleClick, showLabelScores } = this.props;
 
         // Build the sortedSegments dict. It always has 'unsorted', then append whatever is in thresholds.
-        let sortedImages = {unsorted: []}
+        let sortedImages= {unsorted: []}
+        for (const [label, _] of Object.entries(thresholds)){
+            sortedImages[label] = []
+        }
 
         images.forEach((item, index) => {
 
-            // For now just put them all in unsorted.
-            sortedImages.unsorted.push(item)
+            // If no scores at all, then it's unsorted.
+            if (Object.keys(item.classes).length === 0 && item.classes.constructor === Object) {
+                sortedImages.unsorted.push(item)
+            } else {
 
+                //  If reach here, then there is a scores object with at least one score.
+                let notBeenSorted = true
+                for (const [label, score] of Object.entries(item.classes)) {
+                    if (score >= thresholds[label]) {
+                        sortedImages[label].push(item)
+                        notBeenSorted = false
+                    }
+                }
+
+                // If the item was not sorted according to any of it's labels, then it goes back into unsorted.
+                if ( notBeenSorted ) {
+                    sortedImages.unsorted.push(item)
+                }
+            }
         })
 
         return (
@@ -54,19 +73,39 @@ class ImageBrowser extends React.Component {
                     <Tabs
                         value={this.state.value}
                         onChange={this.handleTabChange.bind(this)}
-                        style={{backgroundColor: '#1F7B67'}}
+                        style={{backgroundColor: '#00A287'}}
                         TabIndicatorProps={{style: {backgroundColor: '#5eD0BD'}}}
                     >
                         <Tab label={`Unsorted [${sortedImages['unsorted'].length}]`}/>
+                        {Object.entries(thresholds).map(([key,value])=>{
+                            return (
+                                <Tab key={key} label={`${key} [${sortedImages[key].length}]`}/>
+                            )
+                        })}
                     </Tabs>
                 </AppBar>
                 <TabPanel value={this.state.value} index={0}>
                     <Selector
                         items={sortedImages.unsorted}
                         handleSelectionFinish={handleSelectionFinish}
+                        handleDoubleClick={handleDoubleClick}
                         numItems={sortedImages.unsorted.length}
+                        showLabelScores={showLabelScores}
                     />
                 </TabPanel>
+                {Object.entries(thresholds).map(([key,value])=>{
+                        return (
+                            <TabPanel key={key} value={this.state.value} index={Object.keys(thresholds).indexOf(key) + 1}>
+                                <Selector
+                                    items={sortedImages[key]}
+                                    handleSelectionFinish={handleSelectionFinish}
+                                    handleDoubleClick={handleDoubleClick}
+                                    numItems={sortedImages.unsorted.length}
+                                    showLabelScores={showLabelScores}
+                                />
+                            </TabPanel>
+                        )
+                    })}
             </div>
         )
     }

@@ -42,6 +42,7 @@ class App extends React.Component {
 
     // This is responsible for checking with Cognito whether or not a user is logged in.
     componentDidMount() {
+        document.title = "Thea Portal";
         Auth.currentAuthenticatedUser({bypassCache: false})
             .then((user) => {
 

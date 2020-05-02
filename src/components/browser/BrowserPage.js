@@ -9,6 +9,10 @@ import * as queries from "../../graphql/queries";
 import * as Sentry from "@sentry/browser";
 
 import ImageBrowser from "./ImageBrowser";
+import BrowserControlPanel from "./BrowserControlPanel";
+import * as mutations from "../../graphql/mutations";
+
+import splash_image from '../../images/splash_image.png';
 
 class BrowserPage extends React.Component {
 
@@ -16,11 +20,17 @@ class BrowserPage extends React.Component {
         super();
         this.state = {
             sensors: [],
-            imageURLS: []
+            items: [],
+            selectedItems: [],
+            modifiedItems: [],
+            focusItem: null,
+            labels: {cat: 0.5},
+            showLabelScores: false
         }
     }
 
     componentDidMount() {
+        document.addEventListener("keydown", this.handleKeyPress.bind(this), false);
         this.refreshPage(this.props.zone)
     }
 
@@ -29,6 +39,25 @@ class BrowserPage extends React.Component {
         // Pull Sensors from API.
         this.setState({sensors: [], imageURLS: []})
         this.getZoneSensors(zone);
+    }
+
+    componentWillUnmount(){
+        document.removeEventListener("keydown", this.handleKeyPress.bind(this), false);
+    }
+
+    handleKeyPress(event){
+        if (event.key === 'Delete') {
+                this.handleAssignLabel('none')
+            }
+        Object.entries(this.state.labels).map(([key,value])=>{
+            if (event.key === key[0]) {
+                this.handleAssignLabel(key, false)
+            }
+            if (event.key === key[0].toUpperCase()) {
+                this.handleAssignLabel(key, true)
+            }
+            return null
+        })
     }
 
     // API Calls
@@ -73,19 +102,33 @@ class BrowserPage extends React.Component {
             .then((result) => {
 
                 let image_list = result.data.getSensor.images.items
-                console.log(image_list)
 
                 // Get URLs for those images.
-                this.fetch_urls(image_list)
-                    .then((presignedURLs) => {
+                this.fetch_urls(image_list, sensorID)
+                    .then((items) => {
 
-                        let imageURLS = this.state.imageURLS;
-                        imageURLS.push(...presignedURLs)
-                        this.setState({imageURLS: imageURLS})
+                        let _items = this.state.items;
+                        _items.push(...items)
+                        this.setState({items: _items})
                     })
 
             })
             .catch((result) => console.log(result));
+    }
+
+
+    APICALL_mutateImages (image) {
+        const payload = {
+            id: image.id,
+            classes: image.classes
+        };
+        API.graphql(graphqlOperation(mutations.updateImage, {input: payload}))
+            .then((result) => {
+                console.log("Success: ", result)
+
+            })
+            .catch((result) => {
+            });
     }
 
 
@@ -98,23 +141,116 @@ class BrowserPage extends React.Component {
         }
     }
 
-     async fetch_urls(image_list) {
+     async fetch_urls(image_list, sensorID) {
 
-        let presignedURLs = []
+        let items = []
 
         for (var i = 0; i < image_list.length; i++) {
             let psu = await Storage.get(image_list[i].url)
-            presignedURLs.push({url: psu})
+
+            // Turn class string into list.
+            let classList = image_list[i].classes.split(',')
+            let classes = {}
+
+            for (let i = 0; i < classList.length; i++) {
+                if (classList[i].includes(':')) {
+                    let bits = classList[i].split(':')
+                    classes[bits[0]] = parseFloat(bits[1])
+                }
+            }
+
+            items.push({url: psu, id: image_list[i].id, classes: classes, sensorID: sensorID})
         }
 
-        return presignedURLs
+        return items
+    }
+
+    save() {
+
+        let modifiedItems = this.state.modifiedItems;
+
+        for (let i = 0; i < modifiedItems.length; i++) {
+
+            let image = { ...modifiedItems[i] };
+
+            // Convert classes back to class code.
+            let classCodeArray = []
+            for (const label in image.classes) {
+                let labelCode = `${label}:${image.classes[label]}`;
+                classCodeArray.push(labelCode)
+            }
+            let classCode = classCodeArray.join()
+
+            image.classes = classCode
+            this.APICALL_mutateImages(image)
+        }
+
+        this.setState({modifiedItems: []})
     }
 
     // Called from Selector, argument is a list of selected items, does nothing right now.
     handleSelectionFinish(items) {
-
+        this.setState({selectedItems: items});
     }
 
+    handleDoubleClick(item) {
+        this.setState({focusItem: item})
+    }
+
+    // Called from ControlPanel, argument is a label, updates from segment, the stored segments with the new label.
+    handleAssignLabel(label, opposite) {
+
+        // Pull out items to mutate.
+        let items = this.state.items;
+        let modifiedItems = this.state.modifiedItems;
+
+        // Pull out the urls so it's just a list.
+        let urls = this.state.selectedItems.map(item => item.url);
+
+        for (var i = 0; i < items.length; i++) {
+            if (urls.includes(items[i].url)) {
+
+                // If none, then remove all labels for this segment. Otherwise add relevant label.
+                if (label === 'none') {
+                    items[i].classes = {}
+                } else {
+
+                    // Set label to 1.0.
+                    if ( opposite ) {
+                        items[i].classes[label] = 0.0;
+                    } else {
+                        items[i].classes[label] = 1.0;
+                    }
+                }
+
+                if (modifiedItems.indexOf(items[i]) === -1) {
+                    modifiedItems.push(items[i])
+                }
+            }
+        }
+
+        // Finally update the state, and save.
+        this.setState({items: items, selectedItems: [], modifiedItems: modifiedItems});
+    }
+
+    // Called from ControlPanel, no argument, simply toggles state.
+    handleToggleLabelScores() {
+        if (this.state.showLabelScores) {
+            this.setState({showLabelScores: false})
+        } else {
+            this.setState({showLabelScores: true})
+        }
+    }
+
+    handleToggleSensor(sensor) {
+        let sensors = this.state.sensors;
+        for (let i = 0; i < sensors.length; i++) {
+                if (sensors[i].id == sensor.id) {
+                    sensors[i].selected = !sensors[i].selected;
+                }
+        }
+        this.setState({sensors: sensors})
+    }
 
     componentDidCatch(error, errorInfo) {
         Sentry.withScope((scope) => {
@@ -125,26 +261,64 @@ class BrowserPage extends React.Component {
 
     render() {
 
+        // Filter the items to be only those in the sensor list.
+        let currentSensorIDS = this.state.sensors.map((sensor) => (sensor.selected ? sensor.id : null))
+        let filteredItems = this.state.items.filter((item) => (currentSensorIDS.includes(item.sensorID) ? item : null))
+
+        let handleToggleSensor = this.handleToggleSensor.bind(this)
+
+
         return (
             <div style={{width: '100%', height: (window.innerHeight * 0.94), /*backgroundImage: 'url(' + require('../../images/mesh_small.jpg') + ')', backgroundSize: 'cover', backgroundRepeat: 'no-repeat'*/}}>
                 <div style={{display: 'flex'}}>
-                    <div style={{width: '75%', padding: '40px'}}>
+                    <div style={{width: '60%', padding: '40px'}}>
                         <Paper elevation={5}>
-                            <ImageBrowser images={this.state.imageURLS} handleSelectionFinish={this.handleSelectionFinish.bind(this)}/>
+                            <div>
+                                <BrowserControlPanel
+                                    labels={this.state.labels}
+                                    showLabelScores={this.state.showLabelScores}
+                                    handleAssignLabel={this.handleAssignLabel.bind(this)}
+                                    handleToggleLabelScores={this.handleToggleLabelScores.bind(this)}
+                                    handleSave={this.save.bind(this)}
+                                />
+                            </div>
+                            <ImageBrowser
+                                images={filteredItems}
+                                thresholds={this.state.labels}
+                                showLabelScores={this.state.showLabelScores}
+                                handleSelectionFinish={this.handleSelectionFinish.bind(this)}
+                                handleDoubleClick={this.handleDoubleClick.bind(this)}
+                            />
                         </Paper>
                     </div>
-                    <div style={{width: '25%', padding: '40px', paddingLeft: '0px'}}>
-                        <Paper elevation={5}>
-                            <List>
-                                {this.state.sensors.map(function(item, index) {
-                                    return (
-                                        <ListItem button key={item.id} selected={item.selected}>
-                                            <ListItemText primary={item.name}/>
-                                        </ListItem>
-                                    )
-                                })}
-                            </List>
-                        </Paper>
+                    <div style={{display: 'flex', width: '40%', flexDirection: 'column'}}>
+
+                        <div style={{padding: '40px', paddingLeft: '0px', width: '100%'}}>
+                            <Paper elevation={5}>
+                                {this.state.focusItem == null
+                                 ? <img style={{width: '100%', padding: '10px'}} src={splash_image}/>
+                                 : <img style={{width: '100%', padding: '10px'}} src={this.state.focusItem.url}/>}
+                            </Paper>
+                        </div>
+
+                        <div style={{padding: '40px', paddingLeft: '0px', paddingTop: '0px'}}>
+                            <Paper elevation={5}>
+                                <div style={{padding: '20px'}}>
+                                    <h4>Sensors</h4>
+                                    <p>Select from list those you wish to appear in the browser.</p>
+                                </div>
+                                <List>
+                                    {this.state.sensors.map(function(item, index) {
+                                        return (
+                                            <ListItem button key={item.id} selected={item.selected} onClick={(e) => {handleToggleSensor(item)}}>
+                                                <ListItemText primary={item.name}/>
+                                            </ListItem>
+                                        )
+                                    })}
+                                </List>
+                            </Paper>
+                        </div>
+
                     </div>
                 </div>
             </div>

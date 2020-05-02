@@ -11,10 +11,19 @@ class SegmentCard extends React.Component {
 
     render() {
 
-        const { selectableRef, isSelected, isSelecting, item} = this.props
+        const { selectableRef, isSelected, isSelecting, item, handleDoubleClick, showLabelScores} = this.props
+
+        // Create the label score map.
+        const scores = Object.entries(item.classes).map(([label,score])=>{
+            if (label !== 'dummy') {
+                return (
+                    <div key={label}><b>{label}:</b> {score.toFixed(3).toString()}</div>
+                );
+            }
+        })
 
         return (
-            <div style={{padding: '10px'}}>
+            <div style={{padding: '10px'}} onDoubleClick={(e) => {handleDoubleClick(item)}}>
                 <Card ref={selectableRef}
                       style={{
                           width: '300px',
@@ -26,6 +35,9 @@ class SegmentCard extends React.Component {
                         style={{height: '150px'}}
                         image={`${item.url}`}
                     />
+                    {showLabelScores
+                        ? scores
+                        : null}
                 </Card>
             </div>
         )
@@ -41,7 +53,7 @@ class MyList extends React.Component {
     }
 
     render() {
-        const { items, pageInfo, handleChangePage } = this.props;
+        const { items, pageInfo, handleChangePage, handleDoubleClick, showLabelScores } = this.props;
         const h = window.innerHeight - 440;
 
         return (
@@ -83,7 +95,12 @@ class MyList extends React.Component {
 
                 <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'flex-start', height: h + 'px', overflowY: 'auto'}}>
                     {items.map(item => (
-                        <SelectableCard key={item.url} item={item}/>
+                        <SelectableCard
+                            key={item.url}
+                            item={item}
+                            handleDoubleClick={handleDoubleClick}
+                            showLabelScores={showLabelScores}
+                        />
                         ))}
                 </div>
             </div>
@@ -143,7 +160,7 @@ class Selector extends React.Component {
     render() {
 
         // Destructure the props.
-        let { items, numItems } = this.props;
+        let { items, numItems, handleDoubleClick, showLabelScores } = this.props;
 
         // Paginate the items.
         let paginated_items = items.slice(this.state.page * this.state.numPerPage, (this.state.page * this.state.numPerPage) + this.state.numPerPage)
@@ -165,6 +182,8 @@ class Selector extends React.Component {
                     items={paginated_items}
                     pageInfo={{pageNum: this.state.page, numPages: numItems / this.state.numPerPage}}
                     handleChangePage={this.handleChangePage.bind(this)}
+                    handleDoubleClick={handleDoubleClick}
+                    showLabelScores={showLabelScores}
                 />
             </SelectableGroup>
         )
