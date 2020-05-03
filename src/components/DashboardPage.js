@@ -5,6 +5,7 @@ import {API, graphqlOperation} from "aws-amplify";
 import * as queries from "../graphql/queries";
 import * as mutations from "../graphql/mutations";
 import * as Sentry from '@sentry/browser';
+import MessageAlert from "./misc/MessageAlert";
 
 class DashboardPage extends React.Component {
 
@@ -20,6 +21,7 @@ class DashboardPage extends React.Component {
 
         // Create References.
         this.mapRef = React.createRef();
+        this.messageRef = React.createRef();
     }
 
     resetTabs() {
@@ -246,6 +248,7 @@ class DashboardPage extends React.Component {
 
         return (
             <main className="App">
+                <MessageAlert ref={this.messageRef}/>
                 <div style={{display: 'flex'}}>
                     <div style={{flex: 1}}>
                         <Map

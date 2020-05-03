@@ -8,6 +8,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import * as Sentry from "@sentry/browser";
+import MessageAlert from "../misc/MessageAlert";
 
 class CreateSensor extends React.Component {
 
@@ -87,6 +88,7 @@ class Map extends React.Component {
 
         // References to two dialog pop ups, components that are currently hidden and "turned on" by a button press.
         this.createSensorRef = React.createRef();
+        this.messageRef = React.createRef()
     }
 
     clearPopUp() {
@@ -136,14 +138,19 @@ class Map extends React.Component {
     handleClick(e) {
         if ( e.rightButton ) {
 
-            // This gets the lat and long from the mouse click position.
-            // It then access the reference to the CreateSensor dialog popup, passes it the lat and long and triggers it.
-            // The pop up is then responsible for adding the name and finally calling the parent handler in dashboard which calls the API.
-            //this.props.sensorProps.handleAddSensor(e.lngLat[1], e.lngLat[0])
-            let tempSensor = {name: 'tempSensor', latitude: e.lngLat[1], longitude: e.lngLat[0]}
-            this.setState({tempSensor: tempSensor})
-            this.createSensorRef.current.setState({latitude: e.lngLat[1], longitude: e.lngLat[0]})
-            this.createSensorRef.current.setState({open: true})
+            if (this.props.sensorProps.allSensors.length >= 2) {
+                this.messageRef.current.fire("Sensor Limit Reached", "The free service is limited to just two sensors per zone.")
+            } else {
+
+                // This gets the lat and long from the mouse click position.
+                // It then access the reference to the CreateSensor dialog popup, passes it the lat and long and triggers it.
+                // The pop up is then responsible for adding the name and finally calling the parent handler in dashboard which calls the API.
+                //this.props.sensorProps.handleAddSensor(e.lngLat[1], e.lngLat[0])
+                let tempSensor = {name: 'tempSensor', latitude: e.lngLat[1], longitude: e.lngLat[0]}
+                this.setState({tempSensor: tempSensor})
+                this.createSensorRef.current.setState({latitude: e.lngLat[1], longitude: e.lngLat[0]})
+                this.createSensorRef.current.setState({open: true})
+            }
         }
     }
 
@@ -188,6 +195,7 @@ class Map extends React.Component {
                         ))
                         : null
                     }
+                    <MessageAlert ref={this.messageRef}/>
                     {(this.state.tempSensor)
                         ? <SensorIcon
                             key='tempSensor'

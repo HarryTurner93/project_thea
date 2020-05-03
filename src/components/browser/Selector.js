@@ -114,7 +114,7 @@ class Selector extends React.Component {
         super(props);
         this.state = {
             page: 0,
-            numPerPage: 30
+            numPerPage: 16
         }
     }
 

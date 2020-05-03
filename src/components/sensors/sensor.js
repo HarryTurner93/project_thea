@@ -12,6 +12,8 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import UploadProgress from "./UploadProgress";
+import MessageAlert from "../misc/MessageAlert";
+
 
 // Amplify
 import {API, graphqlOperation, Storage} from 'aws-amplify';
@@ -207,29 +209,16 @@ class DataCard extends React.Component {
     constructor() {
         super();
         this.state = {
-            images: []
+            numImages: 0
         }
+
+        this.messageRef = React.createRef();
     }
 
     componentDidMount() {
         this.APICALL_getSensorImages()
     }
 
-    async fetch_urls(images) {
-
-        let presignedURLs = []
-
-        for (var i = 0; i < images.length; i++) {
-            let psu = await Storage.get(images[i].url)
-            presignedURLs.push(psu)
-        }
-
-        return presignedURLs
-    }
-
-    sleep(ms) {
-        return new Promise(resolve => setTimeout(resolve, ms));
-    }
 
     // API Calls
     // #########
@@ -239,17 +228,8 @@ class DataCard extends React.Component {
         API.graphql(graphqlOperation(queries.getSensor, {id: this.props.sensor.id}))
             .then((result) => {
 
-                console.log(result)
-
                 let images = result.data.getSensor.images.items
-
-                this.fetch_urls(images)
-                    .then((presignedURLs) => {
-                        this.setState({images: presignedURLs})
-                        this.sleep(100)
-                        this.forceUpdate()
-                    })
-
+                this.setState({numImages: images.length})
 
             })
             .catch((result) => console.log(result));
@@ -257,29 +237,37 @@ class DataCard extends React.Component {
 
     handleUpload(e) {
 
-        // Tell the store to start uploading file.
-        this.props.setUploadFile(e.target.files)
+        if ((this.state.numImages + e.target.files.length) >= 11) {
+            let secondary = this.state.numImages < 10 ? `You tried to upload ${e.target.files.length} images, can only upload another ${10 - this.state.numImages}.` : null;
+            this.messageRef.current.fire("Image Limit Reached", `The free service is limited to 100 images per sensor. 
+            This sensor already has ${this.state.numImages} images.`, secondary)
+        } else {
 
-        // Clear the current file.
-        e.target.value = ''
+            // Tell the store to start uploading file.
+            this.props.setUploadFile(e.target.files)
+
+            // Append the files to images for now just so the user can't upload any more.
+            let numImages = this.state.numImages;
+            numImages += e.target.files.length
+            this.setState({numImages: numImages})
+
+            // Clear the current file.
+            e.target.value = ''
+        }
     }
 
     render() {
 
-        console.log(this.state.images.length)
-
         return (
             <div style={{padding: "20px", paddingTop: "0px"}}>
+                <MessageAlert ref={this.messageRef} />
                 <div style={{padding: "20px", backgroundColor:"#D1D1C6", display: "flex", flexDirection: "column", alignItems: "flex-start"}}>
                     <div style={{display: 'flex', width: '100%', justifyContent: 'space-between'}}>
                         <div><h4>Data</h4></div>
                         <Button variant="outlined" component="label">Upload Images<input onChange={this.handleUpload.bind(this)} type='file' style={{display: 'none'}} multiple/></Button>
                     </div>
                     <div style={{display: 'flex', flexWrap: 'wrap'}}>
-                        {this.state.images.slice(0, 3).map(function(item, i) {
-                            return <img key={i} style={{width: '150px', padding: '10px'}} src={item}/>
-                        })}
-                        {this.state.images.length > 3 ? "(others not shown)" : null}
+                        This sensor contains {this.state.numImages} images.
                     </div>
                 </div>
                 <UploadProgress sensor={this.props.sensor}/>

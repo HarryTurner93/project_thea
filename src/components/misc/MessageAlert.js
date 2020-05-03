@@ -20,14 +20,14 @@ class MessageAlert extends React.Component {
 
     // Simple Handlers
     handleClose() { this.setState({open: false}) };
-    fire(title, message) {
-        this.setState({title: title, message: message, open: true})
+    fire(title, message, foot) {
+        this.setState({title: title, message: message, foot:foot, open: true})
     }
 
 
     render() {
 
-        let { title, message } = this.state;
+        let { title, message, foot} = this.state;
 
         return (
             <div>
@@ -35,6 +35,7 @@ class MessageAlert extends React.Component {
                     <DialogTitle>{title}</DialogTitle>
                     <DialogContent>
                         <DialogContentText>{message}</DialogContentText>
+                        <DialogContentText>{foot}</DialogContentText>
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={this.handleClose.bind(this)} color="primary">Okay</Button>
