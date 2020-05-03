@@ -6,6 +6,7 @@ import React from "react";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 
+
 function TabPanel(props) {
 
     const { children, value, index, ...other } = props;
@@ -68,23 +69,24 @@ class ImageBrowser extends React.Component {
         })
 
         return (
-            <div>
-                <AppBar position='static'>
-                    <Tabs
-                        value={this.state.value}
-                        onChange={this.handleTabChange.bind(this)}
-                        style={{backgroundColor: '#00A287'}}
-                        TabIndicatorProps={{style: {backgroundColor: '#5eD0BD'}}}
-                    >
-                        <Tab label={`Unsorted [${sortedImages['unsorted'].length}]`}/>
-                        {Object.entries(thresholds).map(([key,value])=>{
-                            return (
-                                <Tab key={key} label={`${key} [${sortedImages[key].length}]`}/>
-                            )
-                        })}
-                    </Tabs>
-                </AppBar>
-                <TabPanel value={this.state.value} index={0}>
+
+            <div style={{display: 'flex'}}>
+                <Tabs
+                    orientation="vertical"
+                    variant="scrollable"
+                    value={this.state.value}
+                    onChange={this.handleTabChange.bind(this)}
+                    style={{backgroundColor: '#EEEEEE', width: '15%'}}
+                    TabIndicatorProps={{style: {backgroundColor: '#5eD0BD'}}}
+                >
+                    <Tab label={`Unsorted [${sortedImages['unsorted'].length}]`}/>
+                    {Object.entries(thresholds).map(([key,value])=>{
+                        return (
+                            <Tab key={key} label={`${key} [${sortedImages[key].length}]`}/>
+                        )
+                    })}
+                </Tabs>
+                <TabPanel value={this.state.value} index={0} style={{width: '85%'}}>
                     <Selector
                         items={sortedImages.unsorted}
                         handleSelectionFinish={handleSelectionFinish}
@@ -95,7 +97,7 @@ class ImageBrowser extends React.Component {
                 </TabPanel>
                 {Object.entries(thresholds).map(([key,value])=>{
                         return (
-                            <TabPanel key={key} value={this.state.value} index={Object.keys(thresholds).indexOf(key) + 1}>
+                            <TabPanel key={key} value={this.state.value} index={Object.keys(thresholds).indexOf(key) + 1}  style={{width: '85%'}}>
                                 <Selector
                                     items={sortedImages[key]}
                                     handleSelectionFinish={handleSelectionFinish}

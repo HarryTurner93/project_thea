@@ -9,6 +9,7 @@ import Button from "@material-ui/core/Button";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import * as Sentry from "@sentry/browser";
 import './nav.css'
+import MessageAlert from '../misc/MessageAlert';
 
 class CreateZone extends React.Component {
 
@@ -97,10 +98,18 @@ class NavZoneSelector extends React.Component {
         // References to two dialog pop ups, components that are currently hidden and "turned on" by a button press.
         this.createZoneRef = React.createRef();
         this.deleteZoneRef = React.createRef();
+        this.messageRef = React.createRef();
     }
 
     // Handlers to open relevant dialog boxes.
-    handleCreateZone () { this.createZoneRef.current.setState({open: true}) }
+    handleCreateZone () {
+        if (this.props.zoneState.availableZones.length >= 1) {
+            this.messageRef.current.fire("Zone Limit Reached", "The free service is limited to only one zone.")
+        }
+        else {
+            this.createZoneRef.current.setState({open: true})
+        }
+    }
     handleDeleteZone () { this.deleteZoneRef.current.setState({open: true}) }
 
     // Error handling and reporting.
@@ -128,7 +137,7 @@ class NavZoneSelector extends React.Component {
                         {zone.name}
                     </NavDropdown.Item>)
                 }
-
+                <MessageAlert ref={this.messageRef}/>
                 <NavDropdown.Divider />
                 <NavDropdown.Item onClick={this.handleCreateZone.bind(this)}>Create New Zone</NavDropdown.Item>
                 <CreateZone ref={this.createZoneRef} handleCreateZone={handleCreateZone}/>
