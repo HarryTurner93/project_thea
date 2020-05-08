@@ -60,7 +60,7 @@
 				"Timeout": "25",
 				"Code": {
 					"S3Bucket": "amplify-projectthea-dev-193339-deployment",
-					"S3Key": "amplify-builds/S3Triggerf9ea18de-6d576d36666d6e594239-build.zip"
+					"S3Key": "amplify-builds/S3Triggerf9ea18de-4332356878386b55514f-build.zip"
 				}
 			}
 		},

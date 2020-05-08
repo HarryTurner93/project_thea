@@ -44,7 +44,7 @@ export const uploadFile = (files, sensor) => dispatch => {
           }
         })
         .then((result) => {
-          const payload = { url: result.key, classes: "dummy:1.0,", imageSensorId: sensor.id };
+          const payload = { id: result.key, url: result.key, classes: "dummy:1.0,", imageSensorId: sensor.id };
           API.graphql(graphqlOperation(mutations.createImage, {input: payload}))
           .then((apiresult) => {
             dispatch(successUploadFile(file.id))
