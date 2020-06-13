@@ -111,8 +111,7 @@ class LandingPage extends React.Component {
                             <h2>Organise</h2>
                         </div>
                         <div style={{padding: '50px', textAlign: 'center'}}>
-                            <p>Keep camera trap data organised and in one place with a GIS Map based with GIS map
-                                based navigation and sensor management tools.</p>
+                            <p>Keep camera trap data organised and in one place with a GIS Map based navigator and easy sensor management tools.</p>
                         </div>
                     </div>
                     <div style={{width: '33%', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
@@ -132,10 +131,10 @@ class LandingPage extends React.Component {
                             <DoubleArrowIcon fontSize='large'/>
                         </div>
                         <div>
-                            <h2>Automate</h2>
+                            <h2>Accelerate</h2>
                         </div>
                         <div style={{padding: '50px', textAlign: 'center'}}>
-                            <p>We use state of the art Machine Learning systems to automate the identification of
+                            <p>We use state of the art Machine Learning systems to accelerate the identification of
                             animal species within camera trap photos. </p>
                         </div>
                     </div>
