@@ -120,7 +120,7 @@ class LandingPage extends React.Component {
                             <DescriptionIcon fontSize='large'/>
                         </div>
                         <div>
-                            <h2>Complete Control</h2>
+                            <h2>Control</h2>
                         </div>
                         <div style={{padding: '50px', textAlign: 'center'}}>
                             <p>Our tools show you exactly what the machine is doing
