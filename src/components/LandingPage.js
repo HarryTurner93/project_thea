@@ -50,7 +50,7 @@ class LandingPage extends React.Component {
         //}
 
         return (
-            <div style={{display: 'flex', width: '70%', margin: 'auto', flexDirection: 'column'}}>
+            <div style={{display: 'flex', width: '1350px', margin: 'auto', flexDirection: 'column'}}>
                 <div>
                     <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
                         <Navbar.Brand><b>Thea</b></Navbar.Brand>
