@@ -123,8 +123,8 @@ class LandingPage extends React.Component {
                             <h2>Control</h2>
                         </div>
                         <div style={{padding: '50px', textAlign: 'center'}}>
-                            <p>Our tools show you exactly what the machine is doing
-                                and let you review and verify the output quickly and intuitively.</p>
+                            <p>Our tools show you exactly what the machine is doing, so that
+                                you can review and verify the output quickly and intuitively.</p>
                         </div>
                     </div>
                     <div style={{width: '33%', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
