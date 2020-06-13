@@ -4,8 +4,9 @@ import Carousel from 'react-bootstrap/Carousel'
 import Jumbotron from 'react-bootstrap/Jumbotron'
 import Button from 'react-bootstrap/Button'
 
-import banner_1 from "../fake_data/fox-banner.jpg";
-import banner_2 from "../fake_data/banner-2.jpg";
+import banner_1 from "../images/camera_banner.png";
+import banner_2 from "../images/enable_banner.png";
+import banner_3 from "../images/squirrel_banner.png";
 import {Nav, Navbar, NavItem} from "react-bootstrap";
 import {Link} from "react-router-dom";
 import {Auth} from 'aws-amplify';
@@ -58,15 +59,6 @@ class LandingPage extends React.Component {
                                 <NavItem href="/">
                                     <Nav.Link as={Link} to="/" >About</Nav.Link>
                                 </NavItem>
-                                <NavItem href="/">
-                                    <Nav.Link as={Link} to="/" >Pricing</Nav.Link>
-                                </NavItem>
-                                <NavItem href="/">
-                                    <Nav.Link as={Link} to="/" >Features</Nav.Link>
-                                </NavItem>
-                                <NavItem href="/">
-                                    <Nav.Link as={Link} to="/" >Blog</Nav.Link>
-                                </NavItem>
                             </Nav>
                         </Navbar.Collapse>
                     </Navbar>
@@ -79,20 +71,25 @@ class LandingPage extends React.Component {
                                 src={banner_1}
                                 alt="First slide"
                             />
-                            <Carousel.Caption>
-                                <h3>Something about auto identification maybe.</h3>
-                                <p>More text down here.</p>
-                            </Carousel.Caption>
                         </Carousel.Item>
                         <Carousel.Item>
                             <img
                                 className="d-block w-100"
                                 src={banner_2}
-                                alt="Third slide"
+                                alt="First slide"
                             />
                             <Carousel.Caption>
-                                <h3>Maybe a fancy screenshot of the software in use</h3>
-                                <p>More explanatory text.</p>
+                              <h3>Read more about our method, here.</h3>
+                            </Carousel.Caption>
+                        </Carousel.Item>
+                        <Carousel.Item>
+                            <img
+                                className="d-block w-100"
+                                src={banner_3}
+                                alt="First slide"
+                            />
+                            <Carousel.Caption>
+                              <h3>Read about how we build our species detectors.</h3>
                             </Carousel.Caption>
                         </Carousel.Item>
                     </Carousel>
@@ -114,9 +111,8 @@ class LandingPage extends React.Component {
                             <h2>Organise</h2>
                         </div>
                         <div style={{padding: '50px', textAlign: 'center'}}>
-                            <p>With Thea's fully featured set of trap management tools, the portal keeps all your
-                            trap data in one place, with easy access, easy searching, and easy management. Use Thea's
-                            management tools to keep your projects organised.</p>
+                            <p>Keep camera trap data organised and in one place with a GIS Map based with GIS map
+                                based navigation and sensor management tools.</p>
                         </div>
                     </div>
                     <div style={{width: '33%', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
@@ -124,12 +120,11 @@ class LandingPage extends React.Component {
                             <DescriptionIcon fontSize='large'/>
                         </div>
                         <div>
-                            <h2>Communicate</h2>
+                            <h2>Complete Control</h2>
                         </div>
                         <div style={{padding: '50px', textAlign: 'center'}}>
-                            <p>With Thea's reporting tools, easily generate summaries from your projects from particular
-                                time periods, from certain areas, and from specific traps. Communicate your project's
-                            data findings to your stakeholders with the click of a button.</p>
+                            <p>Our tools show you exactly what the machine is doing
+                                and let you review and verify the output quickly and intuitively.</p>
                         </div>
                     </div>
                     <div style={{width: '33%', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
@@ -141,8 +136,7 @@ class LandingPage extends React.Component {
                         </div>
                         <div style={{padding: '50px', textAlign: 'center'}}>
                             <p>We use state of the art Machine Learning systems to automate the identification of
-                            animal species within camera trap photos. Use Thea's specifies identification toolset to
-                            minimise the amount of time you spend analysing and tagging photos.</p>
+                            animal species within camera trap photos. </p>
                         </div>
                     </div>
                 </div>

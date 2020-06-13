@@ -1,0 +1,23 @@
+{
+  "name": "imagetrigger",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "aws-serverless-express": "^3.3.5",
+    "body-parser": "^1.17.1",
+    "es6-promise": "^4.2.8",
+    "express": "^4.15.2"
+  },
+  "devDependencies": {
+    "aws-appsync": "^3.0.3",
+    "aws-sdk": "^2.672.0",
+    "graphql-tag": "^2.10.3",
+    "isomorphic-fetch": "^2.2.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

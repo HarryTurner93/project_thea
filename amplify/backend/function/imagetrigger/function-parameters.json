@@ -1,0 +1,17 @@
+{
+    "permissions": {
+        "api": {
+            "api": [
+                "update"
+            ]
+        },
+        "storage": {
+            "bucket": [
+                "read"
+            ],
+            "Image:@model(appsync)": [
+                "update"
+            ]
+        }
+    }
+}

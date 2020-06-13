@@ -28,12 +28,12 @@
 				"FunctionName": {
 					"Fn::If": [
 						"ShouldNotCreateEnvResources",
-						"S3Triggerf9ea18de",
+						"S3Trigger2978f30b",
 						{
 							"Fn::Join": [
 								"",
 								[
-									"S3Triggerf9ea18de",
+									"S3Trigger2978f30b",
 									"-",
 									{
 										"Ref": "env"
@@ -60,7 +60,7 @@
 				"Timeout": "25",
 				"Code": {
 					"S3Bucket": "amplify-projectthea-dev-193339-deployment",
-					"S3Key": "amplify-builds/S3Triggerf9ea18de-4332356878386b55514f-build.zip"
+					"S3Key": "amplify-builds/S3Trigger2978f30b-4a4535577a6350654f65-build.zip"
 				}
 			}
 		},
@@ -70,12 +70,12 @@
 				"RoleName": {
 					"Fn::If": [
 						"ShouldNotCreateEnvResources",
-						"S3Triggerf9ea18deLambdaRolef9ea18de",
+						"S3Trigger2978f30bLambdaRole2978f30b",
 						{
 							"Fn::Join": [
 								"",
 								[
-									"S3Triggerf9ea18deLambdaRolef9ea18de",
+									"S3Trigger2978f30bLambdaRole2978f30b",
 									"-",
 									{
 										"Ref": "env"

@@ -26,15 +26,6 @@ class LoginPage extends React.Component {
                                 <NavItem href="/">
                                     <Nav.Link as={Link} to="/" >About</Nav.Link>
                                 </NavItem>
-                                <NavItem href="/">
-                                    <Nav.Link as={Link} to="/" >Pricing</Nav.Link>
-                                </NavItem>
-                                <NavItem href="/">
-                                    <Nav.Link as={Link} to="/" >Features</Nav.Link>
-                                </NavItem>
-                                <NavItem href="/">
-                                    <Nav.Link as={Link} to="/" >Blog</Nav.Link>
-                                </NavItem>
                             </Nav>
                             <Nav>
                                 <NavItem href="/">

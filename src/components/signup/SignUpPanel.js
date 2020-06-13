@@ -152,8 +152,8 @@ class SignUpPanel extends React.Component {
                 <FormLabel style={{paddingTop: '60px', fontSize: '16x'}}><b>Privacy</b></FormLabel>
                 <FormLabel style={{paddingTop: '10px', fontSize: '16x'}}>We take privacy very seriously.
                     We're excited that you're interested in using our platform and will never breach that trust by sharing your email
-                    with third parties.</FormLabel>
-                <FormLabel style={{paddingTop: '10px', fontSize: '16x'}}>For more, see our <a href="/">Privacy Policy</a></FormLabel>
+                    with third parties.
+                </FormLabel>
             </div>
         );
 

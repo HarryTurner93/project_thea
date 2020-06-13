@@ -31,3 +31,37 @@ code {
     font-weight: bold;
     background-color: red;
 }
+
+h1 {
+  font-family: 'Manrope', sans-serif;
+  padding-top: 0px;
+  padding-bottom: 20px;
+}
+
+h2 {
+  font-family: 'Manrope', sans-serif;
+  padding-top: 0px;
+  padding-bottom: 20px;
+}
+
+h3 {
+  font-family: 'Manrope', sans-serif;
+  padding-top: 0px;
+  padding-bottom: 20px;
+}
+
+p {
+  font-family: 'Manrope', serif;
+  font-size: 110%;
+  font-weight: 400;
+  text-align: justify;
+  line-height: 25pt;
+}
+
+h5 {
+  font-family: 'Manrope', serif;
+  font-size: 110%;
+  font-weight: 400;
+  text-align: justify;
+  line-height: 25pt;
+}
