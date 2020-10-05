@@ -25,7 +25,7 @@ const useStyles = makeStyles({
     },
     logo: {
         fontFamily: 'Manrope',
-        fontWeight: '700',
+        fontWeight: '800',
         fontSize: '72pt',
         color: '#F69365'
     },
