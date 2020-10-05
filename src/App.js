@@ -34,7 +34,8 @@ const useStyles = makeStyles({
             fontFamily: 'Manrope',
             fontWeight: '700',
             color: '#EFEFEF',
-            fontSize: '18pt'
+            fontSize: '18pt',
+            textAlign: 'center'
         },
         content: {
             padding: '50px',
@@ -46,7 +47,8 @@ const useStyles = makeStyles({
         },
         header: {
             paddingTop: '100px',
-            paddingBottom: '40px'
+            paddingBottom: '30px',
+            fontSize: '22pt'
         },
         content_paragraph_container: {
             width: '80%',
