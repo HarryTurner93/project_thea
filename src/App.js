@@ -37,10 +37,21 @@ const useStyles = makeStyles({
     content: {
         padding: '50px',
         color: '#78939C',
-        textAlign: 'center'
+        textAlign: 'center',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center'
     },
     header: {
-        paddingTop: '40px'
+        paddingTop: '100px',
+        paddingBottom: '60px'
+    },
+    content_paragraph_container: {
+        width: '80%',
+        paddingBottom: '100px',
+    },
+    content_paragraph: {
+        textAlign: 'center'
     },
     team_area: {
         display: 'flex'
@@ -76,30 +87,58 @@ function App() {
         <div className={classes.root}>
             <div className={classes.jumbotron}>
                 <h1 className={classes.logo}>Thea</h1>
-                <h2 className={classes.strapline}>Simplifying Engineering</h2>
+                <h2 className={classes.strapline}>Simplifying Systems Engineering</h2>
             </div>
             <div className={classes.content}>
-                <div>
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras vel tincidunt neque.
-                        Phasellus at tincidunt magna. Sed maximus pulvinar ligula id ullamcorper.
-                        Curabitur faucibus velit et tortor blandit pretium. Aliquam erat volutpat.
-                        Duis porta, ipsum non posuere auctor, lacus diam consequat libero, fermentum
-                        eleifend urna lorem nec metus. Vivamus egestas, libero in semper aliquam, dolor
-                        mauris suscipit lorem, sit amet rhoncus tortor magna quis orci. Vestibulum
-                        facilisis mi sed tristique faucibus. Aenean ac laoreet dolor. Phasellus lacinia
-                        velit neque, a congue quam molestie eget.
+                <h1 className={classes.header}>The Company</h1>
+                <div className={classes.content_paragraph_container}>
+                    <p className={classes.content_paragraph}>
+                        Thea streamlines the systems development lifecycle for engineering teams
+                        of every discipline in mature, regulated markets.
                     </p>
-                    <h1 className={classes.header}>The Team</h1>
-                    <div className={classes.team_area}>
-                        <div className={classes.profile_panel}>
-                            <img src={arnaud} className={classes.profile_image}/>
-                            <h3 className={classes.profile_name}>Arnaud</h3>
-                        </div>
-                        <div className={classes.profile_panel}>
-                            <img src={henry} className={classes.profile_image}/>
-                            <h3 className={classes.profile_name}>Henry</h3>
-                        </div>
+                </div>
+                <h1 className={classes.header}>The Problem</h1>
+                <div className={classes.content_paragraph_container}>
+                    <p className={classes.content_paragraph}>
+                        Over decades the amount of technical complexity in engineering systems has
+                        exploded, increasing the risk of complex failures. In response regulators across the world have
+                        constrained and standardized industries where such risk is unacceptable. Examples include the
+                        Defence, Medical Devices, and Automotive industries.
+                    </p>
+                    <p className={classes.content_paragraph}>
+                        Engineering teams in these industries are
+                        left to absorb the additional compliance overhead using manual processes to handle often
+                        unstructured design, verification/validation, and maintenance data. Requiring engineers to
+                        spend time on these tasks with inadequate tools is a waste of their qualifications,
+                        experience, and expertise.
+                    </p>
+                </div>
+                <h1 className={classes.header}>The Solution</h1>
+                <div className={classes.content_paragraph_container}>
+                    <p className={classes.content_paragraph}>
+                        Thea builds tools for engineers that abstract away the complexity of rote tasks performed
+                        solely to ensure compliance with industry regulations, standards, and best practices.
+                        The engineers’ time freed up this way can then be deployed on more nuanced tasks that truly
+                        require their extensive training and judgment.
+                    </p>
+                </div>
+                <h1 className={classes.header}>Why Now?</h1>
+                <div className={classes.content_paragraph_container}>
+                    <p className={classes.content_paragraph}>
+                        Recent Machine Learning approaches and techniques, notably in Computer Vision, offer a unique
+                        opportunity to automate rote elements of engineering teams’ compliance-related work that
+                        would not have been feasible even some years ago.
+                    </p>
+                </div>
+                <h1 className={classes.header}>The Team</h1>
+                <div className={classes.team_area}>
+                    <div className={classes.profile_panel}>
+                        <img src={arnaud} className={classes.profile_image}/>
+                        <h3 className={classes.profile_name}>Arnaud Doko</h3>
+                    </div>
+                    <div className={classes.profile_panel}>
+                        <img src={henry} className={classes.profile_image}/>
+                        <h3 className={classes.profile_name}>Harry Turner</h3>
                     </div>
                 </div>
             </div>
