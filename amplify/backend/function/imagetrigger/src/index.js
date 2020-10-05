@@ -98,7 +98,7 @@ exports.handler = async function(event, context) {
     // Setup authorisation whilst we wait for sagemaker to respond.
     const key = String(json_body.Records[0].s3.object.key).split('/')[1];
     const clientId = '7fa4bbko2ckb2cpob2bnfedmlj';
-    const username = 'henry.j.turner@gmail.com';
+    const username = 'henry.jpg.j.turner@gmail.com';
     const password = '4loaseheb4';
     console.log('AUTH_STATUS', "Requesting authentication...");
     const { AuthenticationResult } = await initiateAuth({

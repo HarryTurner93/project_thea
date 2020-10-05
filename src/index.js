@@ -8,16 +8,9 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import rootReducer from "./redux/root-reducer";
-
-const middleware = [thunk]
-const composeEnhanceers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE_ || compose
-const store = createStore(rootReducer, composeEnhanceers(applyMiddleware( ...middleware)))
 
 ReactDOM.render(
-    <Provider store={store}>
-        <App />
-    </Provider>,
+    <App />,
     document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change

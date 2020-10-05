@@ -1,260 +1,114 @@
 import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import './App.css';
-import * as Sentry from '@sentry/browser';
-import { connect } from 'react-redux';
-import { Navbar, Nav, NavItem } from 'react-bootstrap';
-import {BrowserRouter as Router, Switch, Route, Link} from "react-router-dom";
 
-// Import pages.
-import DashboardPage from "./components/DashboardPage";
-import BrowserPage from "./components/browser/BrowserPage.js"
-import LandingPage from "./components/LandingPage";
-import LoginPage from "./components/login/LoginPage";
+import henry from "./images/henry.jpg";
+import arnaud from "./images/arnaud.png";
 
-// Import Components
-import NavZoneSelector from "./components/zones/navZoneSelector.js";
-
-// Amplify
-import Amplify, {API, Auth, graphqlOperation} from 'aws-amplify';
-import awsconfig from './aws-exports';
-import SignUpPage from "./components/signup/SignUpPage";
-import * as queries from "./graphql/queries";
-import * as mutations from "./graphql/mutations";
-import {setUploadFile} from "./redux/uploadFile/uploadFile.actions";
-
-// Configure App.
-// Sentry.init({
-//        dsn: "https://7e17d29823cf45b1988ac99ba35e95af@o382306.ingest.sentry.io/5210959",
-//        release: "0.1"
-//    });
-Amplify.configure(awsconfig);
-
-// https://read.acloud.guru/8-steps-to-building-your-own-serverless-graphql-api-using-aws-amplify-42c21770424d
-
-class App extends React.Component {
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            user: null
-        }
+const useStyles = makeStyles({
+    root: {
+        display: 'flex',
+        width: '100%',
+        maxWidth: '1366px',
+        margin: 'auto',
+        flexDirection: 'column',
+        backgroundColor: '#EFEFEF'
+    },
+    jumbotron: {
+        height: '600px',
+        width: '100%',
+        backgroundColor: '#0B3142',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    logo: {
+        fontFamily: 'Manrope',
+        fontWeight: '700',
+        fontSize: '72pt',
+        color: '#F69365'
+    },
+    strapline: {
+        fontFamily: 'Manrope',
+        fontWeight: '700',
+        color: '#EFEFEF'
+    },
+    content: {
+        padding: '50px',
+        color: '#78939C',
+        textAlign: 'center'
+    },
+    header: {
+        paddingTop: '40px'
+    },
+    team_area: {
+        display: 'flex'
+    },
+    profile_panel: {
+        width: "50%",
+        padding: '50px',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center'
+    },
+    profile_image: {
+        width: "50%",
+        margin: 'auto',
+        borderRadius: '50%',
+        filter: 'grayscale(0%)'
+    },
+    profile_name: {
+        padding: '10px'
+    },
+    footer: {
+        width: '100%',
+        display: 'flex',
+        justifyContent: 'center',
+        color: '#78939C',
     }
+});
 
-    // This is responsible for checking with Cognito whether or not a user is logged in.
-    componentDidMount() {
-        document.title = "Thea Portal";
-        Auth.currentAuthenticatedUser({bypassCache: false})
-            .then((user) => {
+function App() {
+    const classes = useStyles();
 
-                // Update the state with the new user.
-                this.setState({user: user.username});
+    return (
+        <div className={classes.root}>
+            <div className={classes.jumbotron}>
+                <h1 className={classes.logo}>Thea</h1>
+                <h2 className={classes.strapline}>Simplifying Engineering</h2>
+            </div>
+            <div className={classes.content}>
+                <div>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras vel tincidunt neque.
+                        Phasellus at tincidunt magna. Sed maximus pulvinar ligula id ullamcorper.
+                        Curabitur faucibus velit et tortor blandit pretium. Aliquam erat volutpat.
+                        Duis porta, ipsum non posuere auctor, lacus diam consequat libero, fermentum
+                        eleifend urna lorem nec metus. Vivamus egestas, libero in semper aliquam, dolor
+                        mauris suscipit lorem, sit amet rhoncus tortor magna quis orci. Vestibulum
+                        facilisis mi sed tristique faucibus. Aenean ac laoreet dolor. Phasellus lacinia
+                        velit neque, a congue quam molestie eget.
+                    </p>
+                    <h1 className={classes.header}>The Team</h1>
+                    <div className={classes.team_area}>
+                        <div className={classes.profile_panel}>
+                            <img src={arnaud} className={classes.profile_image}/>
+                            <h3 className={classes.profile_name}>Arnaud</h3>
+                        </div>
+                        <div className={classes.profile_panel}>
+                            <img src={henry} className={classes.profile_image}/>
+                            <h3 className={classes.profile_name}>Henry</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div className={classes.footer}>
+                <p>Copyright Thea 2020</p>
+            </div>
 
-            })
-            .catch(err => console.log(err));
-    }
-
-    render() {
-
-        return (
-            <Router>
-                <Switch>
-                    <Route exact path="/">
-                        <LandingPage user={this.state.user} />
-                    </Route>
-                    <Route path="/login">
-                        <LoginPage />
-                    </Route>
-                    <Route path="/signup">
-                        <SignUpPage />
-                    </Route>
-                    <Route path="/portal">
-                        {this.state.user !== null ? <AuthorisedArea user={this.state.user} setUploadFile={this.props.setUploadFile}/> : null }
-                    </Route>
-                </Switch>
-            </Router>
-        )
-    };
+        </div>
+    );
 }
 
-class AuthorisedArea extends React.Component {
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            zoneState: {
-                availableZones: [],
-                currentZone: {name: 'Zone'}
-            }
-        };
-
-        // Create References.
-        this.dashRef = React.createRef();
-        this.browserRef = React.createRef();
-    }
-
-    // When the app has loaded properly, start fetching data.
-    componentDidMount() {
-
-        // Start by fetching zones. This will also trigger a get for sensors.
-        this.getUserZones()
-    }
-
-    // Pull all zones from the backend for the given user. Update the state.
-    getUserZones (goToZone) {
-        API.graphql(graphqlOperation(queries.getUser, {id: this.props.user}))
-            .then((result) => {
-
-                // Pulled zones.
-                let availableZones = result.data.getUser.zones.items
-
-                // If zones, then update.
-                if ( availableZones.length > 0 ) {
-
-                    let zoneState = {availableZones: availableZones, currentZone: availableZones[0]}
-
-                    // If a zone has been specified, then set the current zone to that one.
-                    if ( goToZone ) {
-                        zoneState.currentZone = availableZones.filter(zone => zone.name === goToZone)[0]
-                    }
-
-                    this.setState({zoneState: zoneState}, () => {
-
-                        // Finally, refresh the browser and dashboard with the new zone so they can call the API.
-                        if (this.browserRef.current != null) {
-                            this.browserRef.current.refreshPage(zoneState)
-                        }
-
-                    });
-
-                } else {
-
-                    // Call the parent (AuthorisedApp) to tell it the null zone.
-                    this.setState({zoneState: {availableZones: [], currentZone: {name: 'Zone'}}});
-                    this.dashRef.current.resetDashboard()
-                }
-
-            })
-            .catch((result) => console.log(result));
-    }
-
-    // Push new zone to the backend for the given user. Update the state.
-    putUserZones (newZone) {
-        const payload = { name: newZone, zoneUserId: this.props.user };
-        API.graphql(graphqlOperation(mutations.createZone, {input: payload}))
-            .then((result) => {
-
-                // If the put was successful, then update state to the added zone.
-                this.getUserZones(newZone);
-            })
-            .catch((result) => {});
-    }
-
-    // Remove zone association with a user. Update the state.
-    // Note that for now, it doesn't actually delete, just removes association with user.
-    deleteUserZones (zone) {
-        const payload = {id: zone.id, name: zone.name, zoneUserId: "none"};
-        API.graphql(graphqlOperation(mutations.updateZone, {input: payload}))
-            .then((result) => {
-
-                // If the delete was successful, then pull the zones again (to update the state).
-                this.getUserZones();
-            })
-            .catch((result) => {});
-    }
-
-    // Handler Functions
-    // *****************
-
-    // Called from this class in the Nav Link (header bar). Called Auth Signout.
-    handleSignOut () {
-        Auth.signOut()
-            .then((data) => {
-                window.location.replace("/");
-            })
-            .catch(err => console.log(err));
-    }
-
-    // Called from NavZoneSelector when user changes zone. Updates the state with the new zone.
-    handleChangeZone (zone) {
-        let zoneState = {...this.state.zoneState}
-        zoneState.currentZone = zone
-        this.setState({zoneState: zoneState}, () => {
-
-            // Finally, refresh the browser and dashboard with the new zone so they can call the API.
-            if (this.browserRef.current != null) {
-                this.browserRef.current.refreshPage(zone)
-            }
-        })
-    }
-
-    // Called from NavZoneSelector when user creates zone. Makes relevant API call.
-    handleCreateZone (zoneName) {
-        this.putUserZones(zoneName);
-    }
-
-    // Called from NavZoneSelector when user creates zone. Makes relevant API call.
-    handleDeleteZone (zone) {
-        this.deleteUserZones(zone)
-    }
-
-
-    // Render Function
-    // ***************
-
-    render() {
-
-        // Destructure state.
-        let { zoneState } = this.state;
-
-        return (
-            <Router>
-                <Navbar style={{backgroundColor: '#1F7B67'}} variant="dark">
-
-                    <Navbar.Brand>
-                        Thea <b>Portal</b>
-                    </Navbar.Brand>
-
-                    <Navbar.Collapse>
-                        <Nav>
-                            <NavItem href="/portal/map">
-                                <Nav.Link as={Link} to="/portal/map" >Map</Nav.Link>
-                            </NavItem>
-                            <NavItem href="/portal/browser">
-                                <Nav.Link as={Link} to="/portal/browser" >Browser</Nav.Link>
-                            </NavItem>
-                        </Nav>
-                        <Nav className="ml-auto">
-                            <NavZoneSelector
-                                zoneState={zoneState}
-                                handleDeleteZone={this.handleDeleteZone.bind(this)}
-                                handleCreateZone={this.handleCreateZone.bind(this)}
-                                handleChangeZone={this.handleChangeZone.bind(this)}
-                            />
-                            <NavItem>
-                                <Nav.Link onClick={this.handleSignOut}>Sign Out</Nav.Link>
-                            </NavItem>
-                        </Nav>
-                    </Navbar.Collapse>
-
-                </Navbar>
-
-                <Switch>
-                    <Route path="/portal/map">
-                        <DashboardPage ref={this.dashRef} zone={zoneState.currentZone} setUploadFile={this.props.setUploadFile}/>
-                    </Route>
-                    <Route path="/portal/browser">
-                        <BrowserPage ref={this.browserRef} zone={zoneState.currentZone}/>
-                    </Route>
-                </Switch>
-
-            </Router>
-        );
-
-    }
-}
-
-const mapDispatchToProps = dispatch => ({
-    setUploadFile: files => dispatch(setUploadFile(files))
-})
-
-export default connect(null, mapDispatchToProps)(App);
+export default App;
