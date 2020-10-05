@@ -38,7 +38,7 @@ const useStyles = makeStyles({
             textAlign: 'center'
         },
         content: {
-            padding: '50px',
+            padding: '20px',
             color: '#78939C',
             textAlign: 'center',
             display: 'flex',
@@ -51,7 +51,7 @@ const useStyles = makeStyles({
             fontSize: '22pt'
         },
         content_paragraph_container: {
-            width: '80%',
+            width: '90%',
             paddingBottom: '70px',
         },
         content_paragraph: {
@@ -65,6 +65,8 @@ const useStyles = makeStyles({
         profile_panel: {
             width: "100%",
             padding: '50px',
+            paddingLeft: '0px',
+            paddingRight: '0px',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center'
