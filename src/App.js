@@ -173,7 +173,7 @@ function App() {
         <div className={classes.root}>
             <div className={classes.jumbotron}>
                 <h1 className={classes.logo}>Thea</h1>
-                <h2 className={classes.strapline}>Simplifying Systems Engineering</h2>
+                <h2 className={classes.strapline}>Simplifying Engineering</h2>
             </div>
             <div className={classes.content}>
                 <h1 className={classes.header}>The Company</h1>
