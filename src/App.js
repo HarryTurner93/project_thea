@@ -6,77 +6,159 @@ import henry from "./images/henry.jpg";
 import arnaud from "./images/arnaud.png";
 
 const useStyles = makeStyles({
-    root: {
-        display: 'flex',
-        width: '100%',
-        maxWidth: '1366px',
-        margin: 'auto',
-        flexDirection: 'column',
-        backgroundColor: '#EFEFEF'
+    "@media (min-width: 40px)": {
+        root: {
+            display: 'flex',
+            width: '100%',
+            maxWidth: '1366px',
+            margin: 'auto',
+            flexDirection: 'column',
+            backgroundColor: '#EFEFEF'
+        },
+        jumbotron: {
+            height: '600px',
+            width: '100%',
+            backgroundColor: '#0B3142',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center'
+        },
+        logo: {
+            fontFamily: 'Manrope',
+            fontWeight: '800',
+            fontSize: '72pt',
+            color: '#F69365'
+        },
+        strapline: {
+            fontFamily: 'Manrope',
+            fontWeight: '700',
+            color: '#EFEFEF',
+            fontSize: '18pt'
+        },
+        content: {
+            padding: '50px',
+            color: '#78939C',
+            textAlign: 'center',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center'
+        },
+        header: {
+            paddingTop: '100px',
+            paddingBottom: '40px'
+        },
+        content_paragraph_container: {
+            width: '80%',
+            paddingBottom: '70px',
+        },
+        content_paragraph: {
+            textAlign: 'center',
+            fontSize: '12pt'
+        },
+        team_area: {
+            display: 'flex',
+            flexDirection: 'column'
+        },
+        profile_panel: {
+            width: "100%",
+            padding: '50px',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center'
+        },
+        profile_image: {
+            width: "50%",
+            margin: 'auto',
+            borderRadius: '50%',
+            filter: 'grayscale(0%)'
+        },
+        profile_name: {
+            padding: '10px'
+        },
+        footer: {
+            width: '100%',
+            display: 'flex',
+            justifyContent: 'center',
+            color: '#78939C',
+        }
     },
-    jumbotron: {
-        height: '600px',
-        width: '100%',
-        backgroundColor: '#0B3142',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    logo: {
-        fontFamily: 'Manrope',
-        fontWeight: '800',
-        fontSize: '72pt',
-        color: '#F69365'
-    },
-    strapline: {
-        fontFamily: 'Manrope',
-        fontWeight: '700',
-        color: '#EFEFEF'
-    },
-    content: {
-        padding: '50px',
-        color: '#78939C',
-        textAlign: 'center',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center'
-    },
-    header: {
-        paddingTop: '100px',
-        paddingBottom: '60px'
-    },
-    content_paragraph_container: {
-        width: '80%',
-        paddingBottom: '100px',
-    },
-    content_paragraph: {
-        textAlign: 'center'
-    },
-    team_area: {
-        display: 'flex'
-    },
-    profile_panel: {
-        width: "50%",
-        padding: '50px',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center'
-    },
-    profile_image: {
-        width: "50%",
-        margin: 'auto',
-        borderRadius: '50%',
-        filter: 'grayscale(0%)'
-    },
-    profile_name: {
-        padding: '10px'
-    },
-    footer: {
-        width: '100%',
-        display: 'flex',
-        justifyContent: 'center',
-        color: '#78939C',
+    "@media (min-width: 800px)": {
+        root: {
+            display: 'flex',
+            width: '100%',
+            maxWidth: '1366px',
+            margin: 'auto',
+            flexDirection: 'column',
+            backgroundColor: '#EFEFEF'
+        },
+        jumbotron: {
+            height: '600px',
+            width: '100%',
+            backgroundColor: '#0B3142',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center'
+        },
+        logo: {
+            fontFamily: 'Manrope',
+            fontWeight: '800',
+            fontSize: '72pt',
+            color: '#F69365'
+        },
+        strapline: {
+            fontFamily: 'Manrope',
+            fontWeight: '700',
+            color: '#EFEFEF',
+            fontSize: '24pt'
+        },
+        content: {
+            padding: '50px',
+            color: '#78939C',
+            textAlign: 'center',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center'
+        },
+        header: {
+            paddingTop: '100px',
+            paddingBottom: '60px'
+        },
+        content_paragraph_container: {
+            width: '80%',
+            paddingBottom: '100px',
+        },
+        content_paragraph: {
+            textAlign: 'center',
+             fontSize: '14pt'
+        },
+        team_area: {
+            display: 'flex',
+            flexDirection: 'row'
+        },
+        profile_panel: {
+            width: "50%",
+            padding: '50px',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center'
+        },
+        profile_image: {
+            width: "50%",
+            margin: 'auto',
+            borderRadius: '50%',
+            filter: 'grayscale(0%)'
+        },
+        profile_name: {
+            padding: '10px'
+        },
+        footer: {
+            width: '100%',
+            display: 'flex',
+            justifyContent: 'center',
+            color: '#78939C',
+        }
     }
 });
 
