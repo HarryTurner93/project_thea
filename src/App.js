@@ -141,6 +141,10 @@ const useStyles = makeStyles({
             textAlign: 'center',
              fontSize: '14pt'
         },
+        content_paragraph_left: {
+            textAlign: 'left',
+             fontSize: '14pt'
+        },
         team_area: {
             display: 'flex',
             flexDirection: 'row'
@@ -191,7 +195,7 @@ function App() {
                     <div className={classes.profile_panel}>
                         <img src={arnaud} className={classes.profile_image}/>
                         <h3 className={classes.profile_name}>Arnaud Doko</h3>
-                        <h4 className={classes.profile_name}><i>CEO & Co-Founder</i></h4>
+                        <p className={classes.profile_name}><i>CEO & Co-Founder</i></p>
                         <ul>
                             <li><p>Roles: R&D, Project Management, Account Management</p></li>
                             <li><p>Sectors: Automotive, MedTech, Consultancy</p></li>
@@ -202,6 +206,7 @@ function App() {
                     <div className={classes.profile_panel}>
                         <img src={henry} className={classes.profile_image}/>
                         <h3 className={classes.profile_name}>Harry Turner</h3>
+                        <p className={classes.profile_name}><i>CTO & Co-Founder</i></p>
                         <ul>
                             <li><p>Roles: R&D, Systems Engineering, Machine Learning</p></li>
                             <li><p>Sectors: Aerospace, Defence, Offshore</p></li>
