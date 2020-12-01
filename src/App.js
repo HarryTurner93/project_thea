@@ -58,6 +58,10 @@ const useStyles = makeStyles({
             textAlign: 'center',
             fontSize: '12pt'
         },
+        content_paragraph_left: {
+            textAlign: 'left',
+            fontSize: '12pt'
+        },
         team_area: {
             display: 'flex',
             flexDirection: 'column'
@@ -179,33 +183,70 @@ function App() {
                 <h1 className={classes.header}>The Company</h1>
                 <div className={classes.content_paragraph_container}>
                     <p className={classes.content_paragraph}>
-                        Thea streamlines the systems development lifecycle for engineering teams
-                        of every discipline in mature, regulated markets.
+                        Thea reduces uncertainty at the early stages of non-software enginering projects in mature, regulated markets.
                     </p>
+                </div>
+                <h1 className={classes.header}>The Team</h1>
+                <div className={classes.team_area}>
+                    <div className={classes.profile_panel}>
+                        <img src={arnaud} className={classes.profile_image}/>
+                        <h3 className={classes.profile_name}>Arnaud Doko</h3>
+                        <h4 className={classes.profile_name}><i>CEO & Co-Founder</i></h4>
+                        <ul>
+                            <li><p>Roles: R&D, Project Management, Account Management</p></li>
+                            <li><p>Sectors: Automotive, MedTech, Consultancy</p></li>
+                            <li><p>Previously: Circadia Health, Metaview (both Village Global portfolio)</p></li>
+                            <li><p>Training: Mechanical Engineer, University of Bath</p></li>
+                        </ul>
+                    </div>
+                    <div className={classes.profile_panel}>
+                        <img src={henry} className={classes.profile_image}/>
+                        <h3 className={classes.profile_name}>Harry Turner</h3>
+                        <ul>
+                            <li><p>Roles: R&D, Systems Engineering, Machine Learning</p></li>
+                            <li><p>Sectors: Aerospace, Defence, Offshore</p></li>
+                            <li><p>Previously: Rolls-Royce, Rovco (Foresigh Group portfolio)</p></li>
+                            <li><p>Training: Robotics and AI, University of Bath & Computer Science, Georgia Tech</p></li>
+                        </ul>
+                    </div>
                 </div>
                 <h1 className={classes.header}>The Problem</h1>
                 <div className={classes.content_paragraph_container}>
                     <p className={classes.content_paragraph}>
-                        Over decades the amount of technical complexity in engineering systems has
-                        exploded, increasing the risk of complex failures. In response regulators across the world have
-                        constrained and standardized industries where such risk is unacceptable. Examples include the
-                        Defence, Medical Devices, and Automotive industries.
+                        There is a growing gap in productivity between software engineering and all other engineering
+                        disciplines (e.g. Mechanical, Chemical, or Civil Engineering). Over the past decades, it
+                        has become clear that software engineering teams can build, collaborate, and iterate more
+                        quickly and cheaply than their non-software engineering counterparts. We see two reasons
+                        for this:
                     </p>
-                    <p className={classes.content_paragraph}>
-                        Engineering teams in these industries are
-                        left to absorb the additional compliance overhead using manual processes to handle often
-                        unstructured design, verification/validation, and maintenance data. Requiring engineers to
-                        spend time on these tasks with inadequate tools is a waste of their qualifications,
-                        experience, and expertise.
-                    </p>
+                    <ol>
+                        <li>
+                            <p className={classes.content_paragraph_left}>
+                                Greater regulation — non-software engineering is significantly more regulated than
+                                software engineering. There are more standards governing the design of an airplane
+                                than the development of a food delivery app, and rightly so. Non-software engineering
+                                teams are left to absorb this additional compliance overhead while the trend for
+                                increasing regulation continues.
+                            </p>
+                        </li>
+                        <li>
+                            <p className={classes.content_paragraph_left}>
+                                Fewer and worse tools — software engineers have developed powerful tools
+                                (usually software!) to manage their form of knowledge work while non-software engineers
+                                have fewer and less-powerful software tools available to them. The data they handle
+                                daily exists in physical, fragmented, and often unstructured, locations, and formats.
+                                This is particularly problematic at the earliest, most volatile stages of projects
+                                where later downstream costs are most often locked in.
+                            </p>
+                        </li>
+                    </ol>
                 </div>
                 <h1 className={classes.header}>The Solution</h1>
                 <div className={classes.content_paragraph_container}>
                     <p className={classes.content_paragraph}>
-                        Thea builds tools for engineers that abstract away the complexity of rote tasks performed
-                        solely to ensure compliance with industry regulations, standards, and best practices.
-                        The engineers’ time freed up this way can then be deployed on more nuanced tasks that truly
-                        require their extensive training and judgment.
+                        Thea is an Email and Slack/Teams extension that crawls a non-software engineering team’s
+                        communications, extracts rogue engineering files, and automatically clusters them by project
+                        for easy review and use in compliance.
                     </p>
                 </div>
                 <h1 className={classes.header}>Why Now?</h1>
@@ -215,17 +256,6 @@ function App() {
                         opportunity to automate rote elements of engineering teams’ compliance-related work that
                         would not have been feasible even some years ago.
                     </p>
-                </div>
-                <h1 className={classes.header}>The Team</h1>
-                <div className={classes.team_area}>
-                    <div className={classes.profile_panel}>
-                        <img src={arnaud} className={classes.profile_image}/>
-                        <h3 className={classes.profile_name}>Arnaud Doko</h3>
-                    </div>
-                    <div className={classes.profile_panel}>
-                        <img src={henry} className={classes.profile_image}/>
-                        <h3 className={classes.profile_name}>Harry Turner</h3>
-                    </div>
                 </div>
             </div>
             <div className={classes.footer}>
